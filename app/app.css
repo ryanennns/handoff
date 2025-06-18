@@ -6,7 +6,8 @@
     "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
-root, html {
+root,
+html {
   height: 100%;
   width: 100%;
 }

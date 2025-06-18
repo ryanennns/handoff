@@ -1,48 +1,11 @@
 import React, { useState, useEffect } from "react";
+import {FeatureCard} from "~/Components/FeatureCard";
+import {ServiceIcon} from "~/Components/ServiceIcon";
 
 interface FormData {
   email: string;
   password: string;
 }
-
-interface ServiceIconProps {
-  icon: string;
-  bgColor: string;
-  delay?: number;
-}
-
-const ServiceIcon: React.FC<ServiceIconProps> = ({
-  icon,
-  bgColor,
-  delay = 0,
-}) => (
-  <div
-    className={`w-20 h-20 rounded-2xl flex items-center justify-center text-3xl text-white transition-all duration-300 cursor-pointer backdrop-blur-md border border-white/20 hover:transform hover:-translate-y-2 hover:scale-110 hover:shadow-2xl ${bgColor}`}
-    style={{ animationDelay: `${delay}ms` }}
-  >
-    {icon}
-  </div>
-);
-
-interface FeatureCardProps {
-  icon: string;
-  title: string;
-  description: string;
-}
-
-const FeatureCard: React.FC<FeatureCardProps> = ({
-  icon,
-  title,
-  description,
-}) => (
-  <div className="bg-white/10 backdrop-blur-2xl rounded-3xl p-8 border border-white/20 transition-all duration-300 cursor-pointer hover:transform hover:-translate-y-3 hover:bg-white/15 hover:shadow-2xl">
-    <div className="text-5xl mb-5 bg-gradient-to-r from-pink-400 to-yellow-400 bg-clip-text text-transparent">
-      {icon}
-    </div>
-    <h3 className="text-2xl font-bold text-white mb-4">{title}</h3>
-    <p className="text-white/80 leading-relaxed">{description}</p>
-  </div>
-);
 
 const FloatingShape: React.FC<{
   size: number;
@@ -65,7 +28,7 @@ const FloatingShape: React.FC<{
   />
 );
 
-export const Welcome: React.FC = () => {
+export const LandingPage: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
     email: "",
     password: "",
@@ -94,7 +57,7 @@ export const Welcome: React.FC = () => {
     setSubmitStatus("idle");
 
     try {
-      const response = await fetch("/api/register", {
+      const response = await fetch("localhost:5173/api/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
