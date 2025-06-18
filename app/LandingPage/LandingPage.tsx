@@ -124,7 +124,7 @@ export const LandingPage: React.FC = () => {
         <div className="absolute top-3/4 right-1/4 w-48 h-48 bg-gradient-to-r from-yellow-400/20 to-pink-400/20 rounded-full blur-2xl" />
       </div>
 
-      {/* Header */}
+      <div>
       <header className="text-white relative z-10 py-6">
         <div className="max-w-6xl mx-auto px-6">
           <nav className="flex justify-between items-center">
@@ -146,93 +146,63 @@ export const LandingPage: React.FC = () => {
         </div>
       </header>
 
-      {/* Hero Section */}
-      <section className="relative z-10 text-center py-20">
-        <div className="max-w-6xl mx-auto px-6">
+      <div className="relative z-10 flex flex-col lg:flex-row items-stretch max-w-7xl mx-auto px-6 gap-12 py-20">
+        {/* Hero Section */}
+        <section className="w-full lg:w-1/2 flex flex-col justify-center text-center lg:text-left">
           <h1 className="text-6xl md:text-8xl font-black text-white mb-6 bg-gradient-to-r bg-clip-text text-transparent">
             handoff.fm
           </h1>
-          <p className="text-xl md:text-2xl text-white/90 mb-12 max-w-2xl mx-auto leading-relaxed">
-            Seamlessly transfer your playlists between any music streaming
-            service. Your music, everywhere you want it.
+          <p className="text-xl md:text-3xl text-white/90 mb-12 leading-relaxed">
+            Seamlessly transfer your playlists between any music streaming service. Your music, everywhere you want it.
           </p>
-
-          {/* Streaming Services Preview */}
-          <div className="flex justify-center gap-6 md:gap-8 mb-16 flex-wrap">
-            <ServiceIcon
-              icon="♫"
-              bgColor="bg-gradient-to-br from-green-400 to-green-600"
-              delay={0}
-            />
-            <ServiceIcon
-              icon="🎵"
-              bgColor="bg-gradient-to-br from-red-400 to-pink-500"
-              delay={200}
-            />
-            <ServiceIcon
-              icon="▶"
-              bgColor="bg-gradient-to-br from-red-500 to-red-700"
-              delay={400}
-            />
-            <ServiceIcon
-              icon="🎶"
-              bgColor="bg-gradient-to-br from-gray-700 to-gray-900"
-              delay={600}
-            />
-            <ServiceIcon
-              icon="🎼"
-              bgColor="bg-gradient-to-br from-black to-gray-800"
-              delay={800}
-            />
+          <div className="flex justify-center lg:justify-start gap-6 md:gap-8 flex-wrap">
+            <ServiceIcon icon="♫" bgColor="bg-gradient-to-br from-green-400 to-green-600" delay={0} />
+            <ServiceIcon icon="🎵" bgColor="bg-gradient-to-br from-red-400 to-pink-500" delay={200} />
+            <ServiceIcon icon="▶" bgColor="bg-gradient-to-br from-red-500 to-red-700" delay={400} />
+            <ServiceIcon icon="🎶" bgColor="bg-gradient-to-br from-gray-700 to-gray-900" delay={600} />
+            <ServiceIcon icon="🎼" bgColor="bg-gradient-to-br from-black to-gray-800" delay={800} />
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Signup Section */}
-      <section className="relative z-10 py-20">
-        <div className="max-w-lg mx-auto px-6">
-          <div className="bg-white/10 backdrop-blur-2xl rounded-3xl p-12 border border-white/20 shadow-2xl transition-all duration-300 hover:transform hover:-translate-y-3 hover:shadow-3xl">
-            <h2 className="text-4xl font-bold text-white text-center mb-8">
-              Start Your Journey
-            </h2>
+        {/* Signup Section */}
+        <section className="w-full lg:w-1/2">
+          <div className="bg-white/10 backdrop-blur-2xl rounded-3xl p-12 border border-white/20 shadow-2xl transition-all duration-300 hover:transform hover:-translate-y-3 hover:shadow-3xl h-full flex flex-col justify-center">
+            <h2 className="text-4xl font-bold text-white text-center mb-8">Start Your Journey</h2>
             <div className="space-y-6">
-              <div>
-                <input
+              <input
                   type="email"
                   name="email"
                   value={formData.email}
                   onChange={handleInputChange}
                   placeholder="Enter your email"
                   className="w-full px-6 py-4 text-lg bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl text-white placeholder-white/70 focus:outline-none focus:bg-white/15 focus:border-pink-400 focus:shadow-lg focus:shadow-pink-400/30 transition-all duration-300 focus:transform focus:-translate-y-1"
-                />
-              </div>
-              <div>
-                <input
+              />
+              <input
                   type="password"
                   name="password"
                   value={formData.password}
                   onChange={handleInputChange}
                   placeholder="Create a password"
                   className="w-full px-6 py-4 text-lg bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl text-white placeholder-white/70 focus:outline-none focus:bg-white/15 focus:border-pink-400 focus:shadow-lg focus:shadow-pink-400/30 transition-all duration-300 focus:transform focus:-translate-y-1"
-                />
-              </div>
+              />
               <button
-                onClick={handleSubmit}
-                disabled={isLoading}
-                className={`w-full py-4 text-lg font-bold text-white rounded-2xl bg-gradient-to-r ${getButtonStyles()} hover:shadow-lg uppercase tracking-wide disabled:opacity-80`}
+                  onClick={handleSubmit}
+                  disabled={isLoading}
+                  className={`w-full py-4 text-lg font-bold text-white rounded-2xl bg-gradient-to-r ${getButtonStyles()} hover:shadow-lg uppercase tracking-wide disabled:opacity-80`}
               >
                 {getButtonText()}
               </button>
               {isLoading && (
-                <div className="flex items-center justify-center text-white/80 mt-3">
-                  <div className="animate-spin rounded-full h-5 w-5 border-2 border-white/30 border-t-white mr-3" />
-                  Creating your account...
-                </div>
+                  <div className="flex items-center justify-center text-white/80 mt-3">
+                    <div className="animate-spin rounded-full h-5 w-5 border-2 border-white/30 border-t-white mr-3" />
+                    Creating your account...
+                  </div>
               )}
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </div>
+      </div>
 
       {/* Features Section */}
       <section id="features" className="relative z-10 py-20">
@@ -290,7 +260,7 @@ export const LandingPage: React.FC = () => {
                   "Real-time analytics",
                   "Dedicated support",
                 ],
-                price: "$12/mo",
+                price: "$3/mo",
                 highlight: true,
               },
             ].map(({ title, description, features, price, highlight }) => (
@@ -311,7 +281,7 @@ export const LandingPage: React.FC = () => {
                         key={f}
                         className="flex items-center gap-2 text-white/90"
                       >
-                        <span className="text-xl">✔</span>
+                        <span className="text-xl">✅</span>
                         <span>{f}</span>
                       </li>
                     ))}
