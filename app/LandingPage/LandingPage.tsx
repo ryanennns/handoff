@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import {FeatureCard} from "~/Components/FeatureCard";
-import {ServiceIcon} from "~/Components/ServiceIcon";
+import { FeatureCard } from "~/Components/FeatureCard";
+import { ServiceIcon } from "~/Components/ServiceIcon";
 
 interface FormData {
   email: string;
@@ -256,6 +256,70 @@ export const LandingPage: React.FC = () => {
               title="Perfect Matches"
               description="Advanced matching technology finds the exact songs across platforms, maintaining your playlist integrity."
             />
+          </div>
+        </div>
+      </section>
+
+      {/* Pricing Section */}
+      <section
+        id="pricing"
+        className="relative z-10 py-20 bg-white/5 backdrop-blur-sm border-t border-white/10"
+      >
+        <div className="max-w-6xl mx-auto px-6 text-white">
+          <h2 className="text-5xl font-black text-center mb-16">Pricing</h2>
+          <div className="grid md:grid-cols-2 gap-10 items-stretch">
+            {[
+              {
+                title: "Casual",
+                description:
+                  "Perfect for music lovers who want hassle-free transfers.",
+                features: [
+                  "20 playlist transfers a month",
+                  "Priority matching",
+                  "Basic support",
+                ],
+                price: "Free",
+                highlight: false,
+              },
+              {
+                title: "Pro",
+                description:
+                  "Designed for power users with multiple libraries to manage.",
+                features: [
+                  "Unlimited everything",
+                  "Real-time analytics",
+                  "Dedicated support",
+                ],
+                price: "$12/mo",
+                highlight: true,
+              },
+            ].map(({ title, description, features, price, highlight }) => (
+              <div
+                key={title}
+                className={`flex flex-col justify-between p-10 rounded-3xl border border-white/20 min-h-[480px] ${
+                  highlight
+                    ? "bg-gradient-to-br from-pink-500 to-yellow-400 shadow-2xl"
+                    : "bg-white/10 backdrop-blur"
+                } transition-all duration-300 hover:transform hover:-translate-y-2`}
+              >
+                <div>
+                  <h3 className="text-3xl font-bold mb-2">{title}</h3>
+                  <p className="text-white/80 text-lg mb-6">{description}</p>
+                  <ul className="space-y-3 mb-6">
+                    {features.map((f) => (
+                      <li
+                        key={f}
+                        className="flex items-center gap-2 text-white/90"
+                      >
+                        <span className="text-xl">✔</span>
+                        <span>{f}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="text-3xl font-bold">{price}</div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
