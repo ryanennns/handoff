@@ -1,89 +1,310 @@
-import logoDark from "./logo-dark.svg";
-import logoLight from "./logo-light.svg";
+import React, { useState, useEffect } from "react";
 
-export function Welcome() {
+interface FormData {
+  email: string;
+  password: string;
+}
+
+interface ServiceIconProps {
+  icon: string;
+  bgColor: string;
+  delay?: number;
+}
+
+const ServiceIcon: React.FC<ServiceIconProps> = ({
+  icon,
+  bgColor,
+  delay = 0,
+}) => (
+  <div
+    className={`w-20 h-20 rounded-2xl flex items-center justify-center text-3xl text-white transition-all duration-300 cursor-pointer backdrop-blur-md border border-white/20 hover:transform hover:-translate-y-2 hover:scale-110 hover:shadow-2xl ${bgColor}`}
+    style={{ animationDelay: `${delay}ms` }}
+  >
+    {icon}
+  </div>
+);
+
+interface FeatureCardProps {
+  icon: string;
+  title: string;
+  description: string;
+}
+
+const FeatureCard: React.FC<FeatureCardProps> = ({
+  icon,
+  title,
+  description,
+}) => (
+  <div className="bg-white/10 backdrop-blur-2xl rounded-3xl p-8 border border-white/20 transition-all duration-300 cursor-pointer hover:transform hover:-translate-y-3 hover:bg-white/15 hover:shadow-2xl">
+    <div className="text-5xl mb-5 bg-gradient-to-r from-pink-400 to-yellow-400 bg-clip-text text-transparent">
+      {icon}
+    </div>
+    <h3 className="text-2xl font-bold text-white mb-4">{title}</h3>
+    <p className="text-white/80 leading-relaxed">{description}</p>
+  </div>
+);
+
+const FloatingShape: React.FC<{
+  size: number;
+  top: string;
+  left?: string;
+  right?: string;
+  delay: number;
+}> = ({ size, top, left, right, delay }) => (
+  <div
+    className={`absolute rounded-full bg-white/10 animate-pulse`}
+    style={{
+      width: `${size}px`,
+      height: `${size}px`,
+      top,
+      left,
+      right,
+      animationDelay: `${delay}s`,
+      animationDuration: "4s",
+    }}
+  />
+);
+
+export const Welcome: React.FC = () => {
+  const [formData, setFormData] = useState<FormData>({
+    email: "",
+    password: "",
+  });
+  const [isLoading, setIsLoading] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<
+    "idle" | "success" | "error"
+  >("idle");
+  const [scrollY, setScrollY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => setScrollY(window.scrollY);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async () => {
+    if (!formData.email || !formData.password) return;
+
+    setIsLoading(true);
+    setSubmitStatus("idle");
+
+    try {
+      const response = await fetch("/api/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        setSubmitStatus("success");
+        setFormData({ email: "", password: "" });
+        setTimeout(() => {
+          setSubmitStatus("idle");
+          setIsLoading(false);
+        }, 3000);
+      } else {
+        throw new Error("Registration failed");
+      }
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error: unknown) {
+      setSubmitStatus("error");
+      setTimeout(() => {
+        setSubmitStatus("idle");
+        setIsLoading(false);
+      }, 2000);
+    }
+  };
+
+  const getButtonText = () => {
+    switch (submitStatus) {
+      case "success":
+        return "Account Created! ✨";
+      case "error":
+        return "Try Again";
+      default:
+        return isLoading ? "Creating Account..." : "Get Started";
+    }
+  };
+
+  const getButtonStyles = () => {
+    switch (submitStatus) {
+      case "success":
+        return "from-green-400 to-cyan-400";
+      case "error":
+        return "from-red-400 to-pink-500";
+      default:
+        return "from-pink-400 to-yellow-400";
+    }
+  };
+
   return (
-    <main className="flex items-center justify-center pt-16 pb-4">
-      <div className="flex-1 flex flex-col items-center gap-16 min-h-0">
-        <header className="flex flex-col items-center gap-9">
-          <div className="w-[500px] max-w-[100vw] p-4">
-            <img
-              src={logoLight}
-              alt="React Router"
-              className="block w-full dark:hidden"
-            />
-            <img
-              src={logoDark}
-              alt="React Router"
-              className="hidden w-full dark:block"
-            />
-          </div>
-        </header>
-        <div className="max-w-[300px] w-full space-y-6 px-4">
-          <nav className="rounded-3xl border border-gray-200 p-6 dark:border-gray-700 space-y-4">
-            <p className="leading-6 text-gray-700 dark:text-gray-200 text-center">
-              What&apos;s next?
-            </p>
-            <ul>
-              {resources.map(({ href, text, icon }) => (
-                <li key={href}>
+    <div className="min-h-screen min-w-screen bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500 overflow-hidden">
+      {/* Animated Background Shapes */}
+      <div className="fixed inset-0 pointer-events-none">
+        <FloatingShape size={100} top="20%" left="10%" delay={0} />
+        <FloatingShape size={150} top="60%" right="15%" delay={1} />
+        <FloatingShape size={80} top="10%" right="30%" delay={2} />
+        <FloatingShape size={120} top="80%" left="20%" delay={3} />
+      </div>
+
+      {/* Parallax Background Elements */}
+      <div
+        className="fixed inset-0 pointer-events-none"
+        style={{ transform: `translateY(${scrollY * 0.5}px)` }}
+      >
+        <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-gradient-to-r from-pink-400/20 to-purple-400/20 rounded-full blur-xl" />
+        <div className="absolute top-3/4 right-1/4 w-48 h-48 bg-gradient-to-r from-yellow-400/20 to-pink-400/20 rounded-full blur-2xl" />
+      </div>
+
+      {/* Header */}
+      <header className="text-white relative z-10 py-6">
+        <div className="max-w-6xl mx-auto px-6">
+          <nav className="flex justify-between items-center">
+            <a href="#" className="text-3xl"></a>
+            <ul className="hidden md:flex space-x-8">
+              {["Features", "Pricing", "Support"].map((item) => (
+                <li key={item}>
                   <a
-                    className="group flex items-center gap-3 self-stretch p-3 leading-normal text-blue-700 hover:underline dark:text-blue-500"
-                    href={href}
-                    target="_blank"
-                    rel="noreferrer"
+                    href={`#${item.toLowerCase()}`}
+                    className="text-white/90 font-medium hover:text-white transition-all duration-300 hover:transform hover:-translate-y-1 relative group"
                   >
-                    {icon}
-                    {text}
+                    {item}
+                    <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-pink-400 to-yellow-400 transition-all duration-300 group-hover:w-full" />
                   </a>
                 </li>
               ))}
             </ul>
           </nav>
         </div>
-      </div>
-    </main>
-  );
-}
+      </header>
 
-const resources = [
-  {
-    href: "https://reactrouter.com/docs",
-    text: "React Router Docs",
-    icon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="20"
-        viewBox="0 0 20 20"
-        fill="none"
-        className="stroke-gray-600 group-hover:stroke-current dark:stroke-gray-300"
-      >
-        <path
-          d="M9.99981 10.0751V9.99992M17.4688 17.4688C15.889 19.0485 11.2645 16.9853 7.13958 12.8604C3.01467 8.73546 0.951405 4.11091 2.53116 2.53116C4.11091 0.951405 8.73546 3.01467 12.8604 7.13958C16.9853 11.2645 19.0485 15.889 17.4688 17.4688ZM2.53132 17.4688C0.951566 15.8891 3.01483 11.2645 7.13974 7.13963C11.2647 3.01471 15.8892 0.951453 17.469 2.53121C19.0487 4.11096 16.9854 8.73551 12.8605 12.8604C8.73562 16.9853 4.11107 19.0486 2.53132 17.4688Z"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-        />
-      </svg>
-    ),
-  },
-  {
-    href: "https://rmx.as/discord",
-    text: "Join Discord",
-    icon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="20"
-        viewBox="0 0 24 20"
-        fill="none"
-        className="stroke-gray-600 group-hover:stroke-current dark:stroke-gray-300"
-      >
-        <path
-          d="M15.0686 1.25995L14.5477 1.17423L14.2913 1.63578C14.1754 1.84439 14.0545 2.08275 13.9422 2.31963C12.6461 2.16488 11.3406 2.16505 10.0445 2.32014C9.92822 2.08178 9.80478 1.84975 9.67412 1.62413L9.41449 1.17584L8.90333 1.25995C7.33547 1.51794 5.80717 1.99419 4.37748 2.66939L4.19 2.75793L4.07461 2.93019C1.23864 7.16437 0.46302 11.3053 0.838165 15.3924L0.868838 15.7266L1.13844 15.9264C2.81818 17.1714 4.68053 18.1233 6.68582 18.719L7.18892 18.8684L7.50166 18.4469C7.96179 17.8268 8.36504 17.1824 8.709 16.4944L8.71099 16.4904C10.8645 17.0471 13.128 17.0485 15.2821 16.4947C15.6261 17.1826 16.0293 17.8269 16.4892 18.4469L16.805 18.8725L17.3116 18.717C19.3056 18.105 21.1876 17.1751 22.8559 15.9238L23.1224 15.724L23.1528 15.3923C23.5873 10.6524 22.3579 6.53306 19.8947 2.90714L19.7759 2.73227L19.5833 2.64518C18.1437 1.99439 16.6386 1.51826 15.0686 1.25995ZM16.6074 10.7755L16.6074 10.7756C16.5934 11.6409 16.0212 12.1444 15.4783 12.1444C14.9297 12.1444 14.3493 11.6173 14.3493 10.7877C14.3493 9.94885 14.9378 9.41192 15.4783 9.41192C16.0471 9.41192 16.6209 9.93851 16.6074 10.7755ZM8.49373 12.1444C7.94513 12.1444 7.36471 11.6173 7.36471 10.7877C7.36471 9.94885 7.95323 9.41192 8.49373 9.41192C9.06038 9.41192 9.63892 9.93712 9.6417 10.7815C9.62517 11.6239 9.05462 12.1444 8.49373 12.1444Z"
-          strokeWidth="1.5"
-        />
-      </svg>
-    ),
-  },
-];
+      {/* Hero Section */}
+      <section className="relative z-10 text-center py-20">
+        <div className="max-w-6xl mx-auto px-6">
+          <h1 className="text-6xl md:text-8xl font-black text-white mb-6 bg-gradient-to-r bg-clip-text text-transparent">
+            handoff.fm
+          </h1>
+          <p className="text-xl md:text-2xl text-white/90 mb-12 max-w-2xl mx-auto leading-relaxed">
+            Seamlessly transfer your playlists between any music streaming
+            service. Your music, everywhere you want it.
+          </p>
+
+          {/* Streaming Services Preview */}
+          <div className="flex justify-center gap-6 md:gap-8 mb-16 flex-wrap">
+            <ServiceIcon
+              icon="♫"
+              bgColor="bg-gradient-to-br from-green-400 to-green-600"
+              delay={0}
+            />
+            <ServiceIcon
+              icon="🎵"
+              bgColor="bg-gradient-to-br from-red-400 to-pink-500"
+              delay={200}
+            />
+            <ServiceIcon
+              icon="▶"
+              bgColor="bg-gradient-to-br from-red-500 to-red-700"
+              delay={400}
+            />
+            <ServiceIcon
+              icon="🎶"
+              bgColor="bg-gradient-to-br from-gray-700 to-gray-900"
+              delay={600}
+            />
+            <ServiceIcon
+              icon="🎼"
+              bgColor="bg-gradient-to-br from-black to-gray-800"
+              delay={800}
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* Signup Section */}
+      <section className="relative z-10 py-20">
+        <div className="max-w-lg mx-auto px-6">
+          <div className="bg-white/10 backdrop-blur-2xl rounded-3xl p-12 border border-white/20 shadow-2xl transition-all duration-300 hover:transform hover:-translate-y-3 hover:shadow-3xl">
+            <h2 className="text-4xl font-bold text-white text-center mb-8">
+              Start Your Journey
+            </h2>
+            <div className="space-y-6">
+              <div>
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  placeholder="Enter your email"
+                  className="w-full px-6 py-4 text-lg bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl text-white placeholder-white/70 focus:outline-none focus:bg-white/15 focus:border-pink-400 focus:shadow-lg focus:shadow-pink-400/30 transition-all duration-300 focus:transform focus:-translate-y-1"
+                />
+              </div>
+              <div>
+                <input
+                  type="password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleInputChange}
+                  placeholder="Create a password"
+                  className="w-full px-6 py-4 text-lg bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl text-white placeholder-white/70 focus:outline-none focus:bg-white/15 focus:border-pink-400 focus:shadow-lg focus:shadow-pink-400/30 transition-all duration-300 focus:transform focus:-translate-y-1"
+                />
+              </div>
+              <button
+                onClick={handleSubmit}
+                disabled={isLoading}
+                className={`w-full py-4 text-lg font-bold text-white rounded-2xl bg-gradient-to-r ${getButtonStyles()} hover:shadow-lg uppercase tracking-wide disabled:opacity-80`}
+              >
+                {getButtonText()}
+              </button>
+              {isLoading && (
+                <div className="flex items-center justify-center text-white/80 mt-3">
+                  <div className="animate-spin rounded-full h-5 w-5 border-2 border-white/30 border-t-white mr-3" />
+                  Creating your account...
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Features Section */}
+      <section id="features" className="relative z-10 py-20">
+        <div className="max-w-6xl mx-auto px-6">
+          <h2 className="text-5xl font-black text-white text-center mb-16">
+            Why Choose handoff.fm?
+          </h2>
+          <div className="grid md:grid-cols-3 gap-8">
+            <FeatureCard
+              icon="⚡"
+              title="Lightning Fast"
+              description="Transfer thousands of songs in minutes, not hours. Our optimized algorithms ensure rapid playlist migration."
+            />
+            <FeatureCard
+              icon="🔒"
+              title="Secure & Private"
+              description="Your data is encrypted and never stored. We connect directly to your streaming services with industry-standard security."
+            />
+            <FeatureCard
+              icon="🎯"
+              title="Perfect Matches"
+              description="Advanced matching technology finds the exact songs across platforms, maintaining your playlist integrity."
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="relative z-10 text-center py-12 border-t border-white/10">
+        <div className="max-w-6xl mx-auto px-6">
+          <p className="text-white/70">
+            &copy; 2025 handoff.fm. Seamlessly connecting your music universe.
+          </p>
+        </div>
+      </footer>
+    </div>
+  );
+};
