@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { FeatureCard } from "~/Components/FeatureCard";
 import { ServiceIcon } from "~/Components/ServiceIcon";
+import { FaSpotify, FaYoutube } from "react-icons/fa";
+import { SiApplemusic, SiTidal, SiAmazonmusic } from "react-icons/si";
 
 interface FormData {
   email: string;
@@ -156,11 +158,11 @@ export const LandingPage: React.FC = () => {
             Seamlessly transfer your playlists between any music streaming service. Your music, everywhere you want it.
           </p>
           <div className="flex justify-center lg:justify-start gap-6 md:gap-8 flex-wrap">
-            <ServiceIcon icon="♫" bgColor="bg-gradient-to-br from-green-400 to-green-600" delay={0} />
-            <ServiceIcon icon="🎵" bgColor="bg-gradient-to-br from-red-400 to-pink-500" delay={200} />
-            <ServiceIcon icon="▶" bgColor="bg-gradient-to-br from-red-500 to-red-700" delay={400} />
-            <ServiceIcon icon="🎶" bgColor="bg-gradient-to-br from-gray-700 to-gray-900" delay={600} />
-            <ServiceIcon icon="🎼" bgColor="bg-gradient-to-br from-black to-gray-800" delay={800} />
+            <ServiceIcon icon={<FaSpotify />} bgColor="bg-gradient-to-br from-green-400 to-green-600" delay={0} />
+            <ServiceIcon icon={<FaYoutube />} bgColor="bg-gradient-to-br from-red-500 to-red-700" delay={200} />
+            <ServiceIcon icon={<SiApplemusic />} bgColor="bg-gradient-to-br from-red-400 to-pink-500" delay={400} />
+            <ServiceIcon icon={<SiTidal />} bgColor="bg-black" delay={600} />
+            <ServiceIcon icon={<SiAmazonmusic />} bgColor="bg-[#25D1DB]" delay={800} />
           </div>
         </section>
 

@@ -1,7 +1,7 @@
 import React from "react";
 
 interface ServiceIconProps {
-  icon: string;
+  icon: React.ReactNode;
   bgColor: string;
   delay?: number;
 }
