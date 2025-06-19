@@ -3,6 +3,7 @@ import { Tooltip } from "react-tooltip";
 import { type Service, Service as ServiceEnum, services } from "~/Types/core";
 import { SelectSource } from "~/Dashboard/NewJob/SelectSource";
 import { SelectDestination } from "~/Dashboard/NewJob/SelectDestination";
+import { StepWrapper } from "./StepWrapper";
 
 enum NewJobSteps {
   SelectSource,
@@ -32,21 +33,19 @@ export const NewJobTab: React.FC<{}> = () => {
 
   return (
     <div className="max-w-4xl mx-auto flex flex-col gap-8">
-      <div className="bg-white/10 backdrop-blur-xl rounded-3xl p-8 border border-white/20 text-white">
+      <StepWrapper enabled={currentStep === NewJobSteps.SelectSource}>
         <SelectSource
           enabledServices={enabledServices}
           onClick={onSelectSource}
-          enabled={currentStep === NewJobSteps.SelectSource}
         />
-      </div>
+      </StepWrapper>
 
-      <div className="bg-white/10 backdrop-blur-xl rounded-3xl p-8 border border-white/20 text-white">
+      <StepWrapper enabled={currentStep === NewJobSteps.SelectDestination}>
         <SelectDestination
           enabledServices={enabledServices}
           onClick={onSelectDestination}
-          enabled={currentStep === NewJobSteps.SelectDestination}
         />
-      </div>
+      </StepWrapper>
       <Tooltip id="tooltip" />
     </div>
   );
