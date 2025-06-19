@@ -11,14 +11,6 @@ interface FormData {
 }
 
 export const LandingPage: React.FC = () => {
-  const [formData, setFormData] = useState<FormData>({
-    email: "",
-    password: "",
-  });
-  const [isLoading, setIsLoading] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<
-    "idle" | "success" | "error"
-  >("idle");
   const [scrollY, setScrollY] = useState(0);
 
   useEffect(() => {
@@ -26,74 +18,6 @@ export const LandingPage: React.FC = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSubmit = async () => {
-    if (!formData.email || !formData.password) return;
-
-    setIsLoading(true);
-    setSubmitStatus("idle");
-
-    try {
-      const response = await fetch(
-        "https://handoff-api.enns.dev/api/auth/register",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-            credentials: "include",
-          },
-          body: JSON.stringify(formData),
-        },
-      );
-
-      if (response.ok) {
-        setSubmitStatus("success");
-        setFormData({ email: "", password: "" });
-        setTimeout(() => {
-          setSubmitStatus("idle");
-          setIsLoading(false);
-        }, 3000);
-      } else {
-        throw new Error("Registration failed");
-      }
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (error: unknown) {
-      console.log(error);
-      setSubmitStatus("error");
-      setTimeout(() => {
-        setSubmitStatus("idle");
-        setIsLoading(false);
-      }, 2000);
-    }
-  };
-
-  const getButtonText = () => {
-    switch (submitStatus) {
-      case "success":
-        return "Account Created! ✨";
-      case "error":
-        return "Try Again";
-      default:
-        return isLoading ? "Creating Account..." : "Get Started";
-    }
-  };
-
-  const getButtonStyles = () => {
-    switch (submitStatus) {
-      case "success":
-        return "from-green-400 to-cyan-400";
-      case "error":
-        return "from-red-400 to-pink-500";
-      default:
-        return "from-pink-400 to-yellow-400";
-    }
-  };
 
   return (
     <div className="min-h-screen min-w-screen bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500 overflow-hidden">
