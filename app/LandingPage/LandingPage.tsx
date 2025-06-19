@@ -59,7 +59,7 @@ export const LandingPage: React.FC = () => {
     setSubmitStatus("idle");
 
     try {
-      const response = await fetch("http://127.0.0.1:8000/api/auth/register", {
+      const response = await fetch("https://handoff-api.enns.dev/api/auth/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -198,7 +198,7 @@ export const LandingPage: React.FC = () => {
                 <button
                   onClick={() =>
                     (window.location.href =
-                      "http://127.0.0.1:8000/api/auth/redirect")
+                      "https://handoff-api.enns.dev/api/auth/redirect")
                   }
                   className="px-6 py-3 flex gap-4 items-center justify-center text-lg font-medium text-black bg-white rounded-2xl hover:bg-gray-100 transition-all duration-300 shadow-md"
                 >
@@ -229,7 +229,7 @@ export const LandingPage: React.FC = () => {
               description="Your data is encrypted and never stored. We connect directly to your streaming services with industry-standard security."
             />
             <FeatureCard
-              icon="🎯"
+              icon="X"
               title="Perfect Matches"
               description="Advanced matching technology finds the exact songs across platforms, maintaining your playlist integrity."
             />
