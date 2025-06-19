@@ -59,15 +59,18 @@ export const LandingPage: React.FC = () => {
     setSubmitStatus("idle");
 
     try {
-      const response = await fetch("https://handoff-api.enns.dev/api/auth/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          credentials: "include",
+      const response = await fetch(
+        "https://handoff-api.enns.dev/api/auth/register",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            credentials: "include",
+          },
+          body: JSON.stringify(formData),
         },
-        body: JSON.stringify(formData),
-      });
+      );
 
       if (response.ok) {
         setSubmitStatus("success");
