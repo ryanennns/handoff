@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { FeatureCard } from "~/Components/FeatureCard";
 import { ServiceIcon } from "~/Components/ServiceIcon";
 import { FaSpotify, FaYoutube } from "react-icons/fa";
-import { SiApplemusic, SiTidal, SiAmazonmusic } from "react-icons/si";
+import { SiApplemusic, SiTidal, SiAmazonmusic, SiGoogle } from "react-icons/si";
 
 interface FormData {
   email: string;
@@ -59,9 +59,13 @@ export const LandingPage: React.FC = () => {
     setSubmitStatus("idle");
 
     try {
-      const response = await fetch("localhost:5173/api/register", {
+      const response = await fetch("http://127.0.0.1:8000/api/auth/register", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          credentials: "include",
+        },
         body: JSON.stringify(formData),
       });
 
@@ -77,6 +81,7 @@ export const LandingPage: React.FC = () => {
       }
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error: unknown) {
+      console.log(error);
       setSubmitStatus("error");
       setTimeout(() => {
         setSubmitStatus("idle");
@@ -127,83 +132,83 @@ export const LandingPage: React.FC = () => {
       </div>
 
       <div>
-      <header className="text-white relative z-10 py-6">
-        <div className="max-w-6xl mx-auto px-6">
-          <nav className="flex justify-between items-center">
-            <a href="#" className="text-3xl"></a>
-            <ul className="hidden md:flex space-x-8">
-              {["Features", "Pricing", "Support"].map((item) => (
-                <li key={item}>
-                  <a
-                    href={`#${item.toLowerCase()}`}
-                    className="text-white/90 font-medium hover:text-white transition-all duration-300 hover:transform hover:-translate-y-1 relative group"
-                  >
-                    {item}
-                    <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-pink-400 to-yellow-400 transition-all duration-300 group-hover:w-full" />
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </nav>
-        </div>
-      </header>
-
-      <div className="relative z-10 flex flex-col lg:flex-row items-stretch max-w-7xl mx-auto px-6 gap-12 py-20">
-        {/* Hero Section */}
-        <section className="w-full lg:w-1/2 flex flex-col justify-center text-center lg:text-left">
-          <h1 className="text-6xl md:text-8xl font-black text-white mb-6 bg-gradient-to-r bg-clip-text text-transparent">
-            handoff.fm
-          </h1>
-          <p className="text-xl md:text-3xl text-white/90 mb-12 leading-relaxed">
-            Seamlessly transfer your playlists between any music streaming service. Your music, everywhere you want it.
-          </p>
-          <div className="flex justify-center lg:justify-start gap-6 md:gap-8 flex-wrap">
-            <ServiceIcon icon={<FaSpotify />} bgColor="bg-gradient-to-br from-green-400 to-green-600" delay={0} />
-            <ServiceIcon icon={<FaYoutube />} bgColor="bg-gradient-to-br from-red-500 to-red-700" delay={200} />
-            <ServiceIcon icon={<SiApplemusic />} bgColor="bg-gradient-to-br from-red-400 to-pink-500" delay={400} />
-            <ServiceIcon icon={<SiTidal />} bgColor="bg-black" delay={600} />
-            <ServiceIcon icon={<SiAmazonmusic />} bgColor="bg-[#25D1DB]" delay={800} />
+        <header className="text-white relative z-10 py-6">
+          <div className="max-w-6xl mx-auto px-6">
+            <nav className="flex justify-between items-center">
+              <a href="#" className="text-3xl"></a>
+              <ul className="hidden md:flex space-x-8">
+                {["Features", "Pricing", "Support"].map((item) => (
+                  <li key={item}>
+                    <a
+                      href={`#${item.toLowerCase()}`}
+                      className="text-white/90 font-medium hover:text-white transition-all duration-300 hover:transform hover:-translate-y-1 relative group"
+                    >
+                      {item}
+                      <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-pink-400 to-yellow-400 transition-all duration-300 group-hover:w-full" />
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
           </div>
-        </section>
+        </header>
 
-        {/* Signup Section */}
-        <section className="w-full lg:w-1/2">
-          <div className="bg-white/10 backdrop-blur-2xl rounded-3xl p-12 border border-white/20 shadow-2xl transition-all duration-300 hover:transform hover:-translate-y-3 hover:shadow-3xl h-full flex flex-col justify-center">
-            <h2 className="text-4xl font-bold text-white text-center mb-8">Start Your Journey</h2>
-            <div className="space-y-6">
-              <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  placeholder="Enter your email"
-                  className="w-full px-6 py-4 text-lg bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl text-white placeholder-white/70 focus:outline-none focus:bg-white/15 focus:border-pink-400 focus:shadow-lg focus:shadow-pink-400/30 transition-all duration-300 focus:transform focus:-translate-y-1"
+        <div className="relative z-10 flex flex-col lg:flex-row items-stretch max-w-7xl mx-auto px-6 gap-12 py-20">
+          {/* Hero Section */}
+          <section className="w-full lg:w-1/2 flex flex-col justify-center text-center lg:text-left">
+            <h1 className="text-6xl md:text-8xl font-black text-white mb-6 bg-gradient-to-r bg-clip-text text-transparent">
+              handoff.fm
+            </h1>
+            <p className="text-xl md:text-3xl text-white/90 mb-12 leading-relaxed">
+              Seamlessly transfer your playlists between any music streaming
+              service. Your music, everywhere you want it.
+            </p>
+            <div className="flex justify-center lg:justify-start gap-6 md:gap-8 flex-wrap">
+              <ServiceIcon
+                icon={<FaSpotify />}
+                bgColor="bg-gradient-to-br from-green-400 to-green-600"
+                delay={0}
               />
-              <input
-                  type="password"
-                  name="password"
-                  value={formData.password}
-                  onChange={handleInputChange}
-                  placeholder="Create a password"
-                  className="w-full px-6 py-4 text-lg bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl text-white placeholder-white/70 focus:outline-none focus:bg-white/15 focus:border-pink-400 focus:shadow-lg focus:shadow-pink-400/30 transition-all duration-300 focus:transform focus:-translate-y-1"
+              <ServiceIcon
+                icon={<FaYoutube />}
+                bgColor="bg-gradient-to-br from-red-500 to-red-700"
+                delay={200}
               />
-              <button
-                  onClick={handleSubmit}
-                  disabled={isLoading}
-                  className={`w-full py-4 text-lg font-bold text-white rounded-2xl bg-gradient-to-r ${getButtonStyles()} hover:shadow-lg uppercase tracking-wide disabled:opacity-80`}
-              >
-                {getButtonText()}
-              </button>
-              {isLoading && (
-                  <div className="flex items-center justify-center text-white/80 mt-3">
-                    <div className="animate-spin rounded-full h-5 w-5 border-2 border-white/30 border-t-white mr-3" />
-                    Creating your account...
-                  </div>
-              )}
+              <ServiceIcon
+                icon={<SiApplemusic />}
+                bgColor="bg-gradient-to-br from-red-400 to-pink-500"
+                delay={400}
+              />
+              <ServiceIcon icon={<SiTidal />} bgColor="bg-black" delay={600} />
+              <ServiceIcon
+                icon={<SiAmazonmusic />}
+                bgColor="bg-[#25D1DB]"
+                delay={800}
+              />
             </div>
-          </div>
-        </section>
-      </div>
+          </section>
+
+          {/* Signup Section */}
+          <section className="w-full lg:w-1/2">
+            <div className="bg-white/10 backdrop-blur-2xl rounded-3xl p-12 border border-white/20 shadow-2xl transition-all duration-300 hover:transform hover:-translate-y-3 hover:shadow-3xl h-full flex flex-col justify-center">
+              <h2 className="text-4xl font-bold text-white text-center mb-8">
+                Start Your Journey
+              </h2>
+              <div className="space-y-6 flex justify-center">
+                <button
+                  onClick={() =>
+                    (window.location.href =
+                      "http://127.0.0.1:8000/api/auth/redirect")
+                  }
+                  className="px-6 py-3 flex gap-4 items-center justify-center text-lg font-medium text-black bg-white rounded-2xl hover:bg-gray-100 transition-all duration-300 shadow-md"
+                >
+                  <SiGoogle className="w-6 h-6" />
+                  <p>Sign in with Google</p>
+                </button>
+              </div>
+            </div>
+          </section>
+        </div>
       </div>
 
       {/* Features Section */}
