@@ -22,33 +22,6 @@ interface ServiceOption {
   color: string;
 }
 
-const ServiceSelector: React.FC<{
-  selected: string;
-  onSelect: (serviceId: string) => void;
-  services: ServiceOption[];
-  label: string;
-}> = ({ selected, onSelect, services, label }) => (
-  <div className="space-y-3">
-    <label className="text-white font-medium text-lg">{label}</label>
-    <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-      {services.map((service) => (
-        <button
-          key={service.id}
-          onClick={() => onSelect(service.id)}
-          className={`p-4 rounded-2xl border-2 transition-all duration-300 flex flex-col items-center gap-2 ${
-            selected === service.id
-              ? "border-white bg-white/20 transform scale-105"
-              : "border-white/20 bg-white/5 hover:bg-white/10 hover:border-white/40"
-          }`}
-        >
-          <div className={`text-2xl ${service.color}`}>{service.icon}</div>
-          <span className="text-white text-sm font-medium">{service.name}</span>
-        </button>
-      ))}
-    </div>
-  </div>
-);
-
 export const Dashboard: React.FC = () => {
   const [hasAuthed, setHasAuthed] = useState(false);
 
@@ -372,64 +345,6 @@ export const Dashboard: React.FC = () => {
           ) : (
             <div className="max-w-4xl mx-auto">
               <div className="bg-white/10 backdrop-blur-xl rounded-3xl p-8 border border-white/20">
-                <h2 className="text-3xl font-bold text-white mb-8 text-center">
-                  Start New Transfer
-                </h2>
-
-                <div className="space-y-8">
-                  <ServiceSelector
-                    selected={fromService}
-                    onSelect={setFromService}
-                    services={services}
-                    label="Transfer From"
-                  />
-
-                  <ServiceSelector
-                    selected={toService}
-                    onSelect={setToService}
-                    services={services}
-                    label="Transfer To"
-                  />
-
-                  {fromService && toService && fromService !== toService && (
-                    <div className="space-y-3">
-                      <label className="text-white font-medium text-lg">
-                        Select Playlist
-                      </label>
-                      <select
-                        value={selectedPlaylist}
-                        onChange={(e) => setSelectedPlaylist(e.target.value)}
-                        className="w-full p-4 rounded-2xl bg-white/10 border border-white/20 text-white backdrop-blur-xl focus:border-white/40 focus:outline-none"
-                      >
-                        <option value="">Choose a playlist...</option>
-                        {mockPlaylists.map((playlist) => (
-                          <option
-                            key={playlist}
-                            value={playlist}
-                            className="bg-gray-800"
-                          >
-                            {playlist}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                  )}
-
-                  <div className="flex justify-center pt-6">
-                    <button
-                      onClick={handleStartTransfer}
-                      disabled={
-                        !fromService ||
-                        !toService ||
-                        !selectedPlaylist ||
-                        fromService === toService
-                      }
-                      className="px-8 py-4 bg-gradient-to-r from-pink-400 to-yellow-400 text-black font-bold text-lg rounded-2xl hover:transform hover:-translate-y-1 hover:shadow-2xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:transform-none"
-                    >
-                      Start Transfer
-                    </button>
-                  </div>
-                </div>
               </div>
             </div>
           )}
