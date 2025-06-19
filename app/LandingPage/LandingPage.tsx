@@ -3,32 +3,12 @@ import { FeatureCard } from "~/Components/FeatureCard";
 import { ServiceIcon } from "~/Components/ServiceIcon";
 import { FaSpotify, FaYoutube } from "react-icons/fa";
 import { SiApplemusic, SiTidal, SiAmazonmusic, SiGoogle } from "react-icons/si";
+import { FloatingShape } from "~/Components/FloatingShape";
 
 interface FormData {
   email: string;
   password: string;
 }
-
-const FloatingShape: React.FC<{
-  size: number;
-  top: string;
-  left?: string;
-  right?: string;
-  delay: number;
-}> = ({ size, top, left, right, delay }) => (
-  <div
-    className={`absolute rounded-full bg-white/10 animate-pulse`}
-    style={{
-      width: `${size}px`,
-      height: `${size}px`,
-      top,
-      left,
-      right,
-      animationDelay: `${delay}s`,
-      animationDuration: "4s",
-    }}
-  />
-);
 
 export const LandingPage: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({

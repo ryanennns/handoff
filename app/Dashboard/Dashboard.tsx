@@ -8,6 +8,7 @@ import {
   FaExclamationTriangle,
 } from "react-icons/fa";
 import { SiApplemusic, SiTidal, SiAmazonmusic } from "react-icons/si";
+import { FloatingShape } from "~/Components/FloatingShape";
 
 interface TransferJob {
   id: string;
@@ -26,27 +27,6 @@ interface ServiceOption {
   icon: React.ReactNode;
   color: string;
 }
-
-const FloatingShape: React.FC<{
-  size: number;
-  top: string;
-  left?: string;
-  right?: string;
-  delay: number;
-}> = ({ size, top, left, right, delay }) => (
-  <div
-    className={`absolute rounded-full bg-white/5 animate-pulse`}
-    style={{
-      width: `${size}px`,
-      height: `${size}px`,
-      top,
-      left,
-      right,
-      animationDelay: `${delay}s`,
-      animationDuration: "6s",
-    }}
-  />
-);
 
 const StatusBadge: React.FC<{ status: TransferJob["status"] }> = ({
   status,
