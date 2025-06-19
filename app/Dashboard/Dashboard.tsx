@@ -106,6 +106,8 @@ const ServiceSelector: React.FC<{
 );
 
 export const Dashboard: React.FC = () => {
+  const [hasAuthed, setHasAuthed] = useState(false);
+
   useEffect(() => {
     if (typeof window === "undefined") return;
     const url = new URL(window.location.href);
@@ -140,10 +142,11 @@ export const Dashboard: React.FC = () => {
       })
       .then((data) => {
         console.log("Authenticated user:", data);
+        setHasAuthed(true);
       })
       .catch(() => {
         localStorage.removeItem("auth_token");
-        // window.location.href = "/";
+        window.location.href = "/";
       });
   }, []);
 
@@ -258,7 +261,7 @@ export const Dashboard: React.FC = () => {
     setActiveTab("overview");
   };
 
-  return (
+  return hasAuthed ? (
     <div className="min-h-screen bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500 overflow-hidden">
       {/* Animated Background Shapes */}
       <div className="fixed inset-0 pointer-events-none">
@@ -489,5 +492,5 @@ export const Dashboard: React.FC = () => {
         </div>
       </div>
     </div>
-  );
+  ) : null;
 };
