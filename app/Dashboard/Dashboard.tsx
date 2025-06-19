@@ -1,14 +1,8 @@
-import React, { useState, useEffect } from "react";
-import {
-  FaSpotify,
-  FaYoutube,
-  FaArrowRight,
-  FaCheck,
-  FaClock,
-  FaExclamationTriangle,
-} from "react-icons/fa";
-import { SiApplemusic, SiTidal, SiAmazonmusic } from "react-icons/si";
+import React, { useEffect, useState } from "react";
+import { FaArrowRight, FaSpotify, FaYoutube } from "react-icons/fa";
+import { SiAmazonmusic, SiApplemusic, SiTidal } from "react-icons/si";
 import { FloatingShape } from "~/Components/FloatingShape";
+import { JobStatusBadge } from "~/Components/JobStatusBadge";
 
 interface TransferJob {
   id: string;
@@ -27,36 +21,6 @@ interface ServiceOption {
   icon: React.ReactNode;
   color: string;
 }
-
-const StatusBadge: React.FC<{ status: TransferJob["status"] }> = ({
-  status,
-}) => {
-  const statusConfig = {
-    pending: { icon: <FaClock />, text: "Pending", color: "bg-yellow-500" },
-    "in-progress": {
-      icon: <FaClock />,
-      text: "In Progress",
-      color: "bg-blue-500",
-    },
-    completed: { icon: <FaCheck />, text: "Completed", color: "bg-green-500" },
-    failed: {
-      icon: <FaExclamationTriangle />,
-      text: "Failed",
-      color: "bg-red-500",
-    },
-  };
-
-  const config = statusConfig[status];
-
-  return (
-    <div
-      className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-white text-sm font-medium ${config.color}`}
-    >
-      {config.icon}
-      {config.text}
-    </div>
-  );
-};
 
 const ServiceSelector: React.FC<{
   selected: string;
@@ -376,7 +340,7 @@ export const Dashboard: React.FC = () => {
                               </p>
                             </div>
                           </div>
-                          <StatusBadge status={job.status} />
+                          <JobStatusBadge status={job.status} />
                         </div>
 
                         <div className="flex items-center justify-between">
