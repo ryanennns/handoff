@@ -152,30 +152,8 @@ export const Dashboard: React.FC = () => {
     },
   ];
 
-  const mockPlaylists = [
-    "Road Trip Classics",
-    "Late Night Study",
-    "Summer Vibes 2025",
-    "Jazz & Blues Collection",
-    "Electronic Dreams",
-  ];
-
   const getServiceInfo = (serviceId: string) => {
     return services.find((s) => s.id === serviceId);
-  };
-
-  const handleStartTransfer = () => {
-    // Mock transfer initiation
-    console.log("Starting transfer:", {
-      fromService,
-      toService,
-      selectedPlaylist,
-    });
-    // Reset form
-    setFromService("");
-    setToService("");
-    setSelectedPlaylist("");
-    setActiveTab("overview");
   };
 
   return hasAuthed ? (
@@ -220,7 +198,7 @@ export const Dashboard: React.FC = () => {
                   onClick={() => setActiveTab("new-transfer")}
                   className={`px-6 py-2 rounded-xl font-medium transition-all duration-300 ${
                     activeTab === "new-transfer"
-                      ? "bg-gradient-to-r from-pink-400 to-yellow-400 text-black"
+                      ? "bg-white/20 text-white"
                       : "text-white/70 hover:text-white hover:bg-white/10"
                   }`}
                 >
@@ -344,8 +322,7 @@ export const Dashboard: React.FC = () => {
             </div>
           ) : (
             <div className="max-w-4xl mx-auto">
-              <div className="bg-white/10 backdrop-blur-xl rounded-3xl p-8 border border-white/20">
-              </div>
+              <div className="bg-white/10 backdrop-blur-xl rounded-3xl p-8 border border-white/20"></div>
             </div>
           )}
         </div>
