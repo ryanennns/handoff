@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { FloatingShape } from "~/Components/FloatingShape";
 import { TransferJobRow } from "./TransferJobRow";
-import { NewJobTab } from "./NewJobTab";
+import { NewJobTab } from "./NewJob/NewJobTab";
 import type { TransferJob } from "~/Types/core";
 
 export const Dashboard: React.FC = () => {

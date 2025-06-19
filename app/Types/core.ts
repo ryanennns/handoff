@@ -1,16 +1,16 @@
 export enum Service {
   Spotify = "spotify",
-  Tidal = "tidal",
-  YouTube = "youtube-music",
   Apple = "apple-music",
+  YouTube = "youtube-music",
+  Tidal = "tidal",
   Amazon = "amazon-music",
 }
 
 export const services: Service[] = [
   Service.Spotify,
-  Service.Tidal,
-  Service.YouTube,
   Service.Apple,
+  Service.YouTube,
+  Service.Tidal,
   Service.Amazon,
 ];
 

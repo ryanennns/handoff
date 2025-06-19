@@ -41,20 +41,20 @@ const serviceMap: Record<Service, ServiceSelectorConfig> = {
 interface Props {
   service: Service;
   enabled: boolean;
+  onClick?: () => void;
 }
 
-export const ServiceSelector = ({ service, enabled }: Props) => {
+export const ServiceSelector = ({ service, enabled, onClick }: Props) => {
   const bgColor = enabled ? serviceMap[service].bgColor : "bg-gray-500";
 
   return (
-    <>
-      <a
-        data-tooltip-id="tooltip"
-        data-tooltip-content={serviceMap[service].name}
-        data-tooltip-place="top"
-      >
-        <ServiceIcon icon={serviceMap[service].icon} bgColor={bgColor} />
-      </a>
-    </>
+    <div
+      data-tooltip-id="tooltip"
+      data-tooltip-content={serviceMap[service].name}
+      data-tooltip-place="top"
+      onClick={enabled ? onClick : undefined}
+    >
+      <ServiceIcon icon={serviceMap[service].icon} bgColor={bgColor} />
+    </div>
   );
 };
