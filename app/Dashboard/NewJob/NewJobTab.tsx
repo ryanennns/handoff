@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Tooltip } from "react-tooltip";
-import { type Service, Service as ServiceEnum, services } from "~/Types/core";
+import {
+  type Playlist,
+  type Service,
+  Service as ServiceEnum,
+  services,
+} from "~/Types/core";
 import { SelectSource } from "~/Dashboard/NewJob/SelectSource";
 import { SelectDestination } from "~/Dashboard/NewJob/SelectDestination";
 import { StepWrapper } from "./StepWrapper";
@@ -8,6 +13,7 @@ import { SelectPlaylists } from "./SelectPlaylists";
 
 enum NewJobSteps {
   SelectSource,
+  SelectPlaylists,
   SelectDestination,
 }
 
@@ -38,10 +44,15 @@ export const NewJobTab: React.FC<{}> = () => {
   const [selectedSource, setSelectedSource] = useState<Service | null>(null);
   const [selectedDestination, setSelectedDestination] =
     useState<Service | null>(null);
+  const [selectedPlaylists, setSelectedPlaylists] = useState<Playlist[]>([]);
+
+  useEffect(() => {
+    console.log({ selectedPlaylists });
+  }, [selectedPlaylists]);
+
   const [currentStep, setCurrentStep] = useState<NewJobSteps>(
     NewJobSteps.SelectSource,
   );
-
   const onSelectSource = (service: Service) => {
     setSelectedSource(
       service !== null && service === selectedSource ? null : service,
@@ -71,16 +82,19 @@ export const NewJobTab: React.FC<{}> = () => {
         />
       </StepWrapper>
 
+      <StepWrapper enabled={true}>
+        <SelectPlaylists
+          service={selectedSource as string}
+          setter={setSelectedPlaylists}
+        />
+      </StepWrapper>
+
       <StepWrapper enabled={currentStep === NewJobSteps.SelectDestination}>
         <SelectDestination
           enabledServices={enabledServices}
           onClick={onSelectDestination}
           selectedDestination={selectedDestination}
         />
-      </StepWrapper>
-
-      <StepWrapper enabled={true}>
-        <SelectPlaylists service={selectedSource as string} />
       </StepWrapper>
       <Tooltip id="tooltip" />
     </div>

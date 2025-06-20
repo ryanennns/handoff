@@ -24,3 +24,14 @@ export interface TransferJob {
   songsTransferred: number;
   createdAt: string;
 }
+
+export interface Playlist {
+  name: string;
+  tracks: string;
+  owner: {
+    display_name: string;
+    id: string;
+  };
+  number_of_tracks: number;
+  image_uri: string;
+}

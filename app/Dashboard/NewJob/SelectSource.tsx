@@ -14,14 +14,17 @@ export const SelectSource = ({
   selectedSource,
 }: Props) => (
   <>
-    <h1 className="text-2xl font-bold">1. Select Source</h1>
+    <h1 className="text-2xl font-bold">3. Select Destination</h1>
     <div className="flex flex-row justify-center gap-12 mt-6">
       {services.map((service: Service) => (
-        <ServiceSelector
-          service={service}
-          enabled={enabledServices.includes(service)}
-          onClick={() => onClick(service)}
-        />
+        <div key={service} className="flex flex-col items-center space-y-2">
+          <ServiceSelector
+            service={service}
+            enabled={enabledServices.includes(service)}
+            onClick={() => onClick(service)}
+          />
+          <p className="text-white/70 text-sm capitalize">{service}</p>
+        </div>
       ))}
     </div>
   </>
