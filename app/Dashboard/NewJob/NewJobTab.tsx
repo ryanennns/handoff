@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Tooltip } from "react-tooltip";
 import { type Service, Service as ServiceEnum, services } from "~/Types/core";
 import { SelectSource } from "~/Dashboard/NewJob/SelectSource";
@@ -21,19 +21,24 @@ export const NewJobTab: React.FC<{}> = () => {
   );
 
   const onSelectSource = (service: Service) => {
-    setSelectedSource(service);
+    setSelectedSource(service !== null && service === selectedSource ? null : service);
     setCurrentStep(NewJobSteps.SelectDestination);
-    console.log(`Selected source service: ${service}`);
   };
 
   const onSelectDestination = (service: Service) => {
-    setSelectedDestination(service);
-    console.log(`Selected destination service: ${service}`);
+    setSelectedDestination(service !== null && service === selectedDestination ? null : service);
   };
+
+  useEffect(() => {
+    console.log({
+      selectedSource,
+      selectedDestination
+    })
+  }, [selectedSource, selectedDestination]);
 
   return (
     <div className="max-w-4xl mx-auto flex flex-col gap-8">
-      <StepWrapper enabled={currentStep === NewJobSteps.SelectSource}>
+      <StepWrapper enabled={currentStep >= NewJobSteps.SelectSource}>
         <SelectSource
           enabledServices={enabledServices}
           onClick={onSelectSource}
@@ -44,6 +49,7 @@ export const NewJobTab: React.FC<{}> = () => {
         <SelectDestination
           enabledServices={enabledServices}
           onClick={onSelectDestination}
+          selectedDestination={selectedDestination}
         />
       </StepWrapper>
       <Tooltip id="tooltip" />

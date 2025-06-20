@@ -5,9 +5,10 @@ import React from "react";
 interface Props {
   enabledServices: Service[];
   onClick: (service: Service) => void;
+  selectedSource?: Service | null;
 }
 
-export const SelectSource = ({ enabledServices, onClick }: Props) => (
+export const SelectSource = ({ enabledServices, onClick, selectedSource }: Props) => (
   <>
     <h1 className="text-2xl font-bold">1. Select Source</h1>
     <div className="flex flex-row justify-center gap-12 mt-6">
