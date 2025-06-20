@@ -1,9 +1,9 @@
 export enum Service {
   Spotify = "spotify",
-  Apple = "apple-music",
-  YouTube = "youtube-music",
+  Apple = "apple",
+  YouTube = "youtube",
   Tidal = "tidal",
-  Amazon = "amazon-music",
+  Amazon = "amazon",
 }
 
 export const services: Service[] = [
@@ -26,6 +26,7 @@ export interface TransferJob {
 }
 
 export interface Playlist {
+  id: string;
   name: string;
   tracks: string;
   owner: {

@@ -27,6 +27,7 @@ const serviceMap: Record<Service, ServiceSelectorConfig> = {
     name: "YouTube Music",
     icon: <FaYoutube />,
     bgColor: "bg-gradient-to-br from-red-500 to-red-700",
+    redirect: "youtube",
   },
   [Service.Apple]: {
     name: "Apple Music",

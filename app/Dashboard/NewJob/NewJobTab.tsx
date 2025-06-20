@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Tooltip } from "react-tooltip";
 import {
   type Playlist,
   type Service,
   Service as ServiceEnum,
-  services,
 } from "~/Types/core";
 import { SelectSource } from "~/Dashboard/NewJob/SelectSource";
 import { SelectDestination } from "~/Dashboard/NewJob/SelectDestination";
@@ -34,6 +33,7 @@ export const NewJobTab: React.FC<{}> = () => {
         const servicesList = Object.values(ServiceEnum).filter((service) =>
           data.includes(service),
         ) as Service[];
+        console.log({servicesList})
         setEnabledServices(servicesList);
       })
       .catch((error) => {
@@ -45,10 +45,6 @@ export const NewJobTab: React.FC<{}> = () => {
   const [selectedDestination, setSelectedDestination] =
     useState<Service | null>(null);
   const [selectedPlaylists, setSelectedPlaylists] = useState<Playlist[]>([]);
-
-  useEffect(() => {
-    console.log({ selectedPlaylists });
-  }, [selectedPlaylists]);
 
   const [currentStep, setCurrentStep] = useState<NewJobSteps>(
     NewJobSteps.SelectSource,
@@ -66,12 +62,13 @@ export const NewJobTab: React.FC<{}> = () => {
     );
   };
 
-  useEffect(() => {
+  const triggerJob = () => {
     console.log({
       selectedSource,
       selectedDestination,
+      selectedPlaylists: selectedPlaylists.map((p: Playlist) => p.id),
     });
-  }, [selectedSource, selectedDestination]);
+  };
 
   return (
     <div className="max-w-4xl mx-auto flex flex-col gap-8">
@@ -96,6 +93,20 @@ export const NewJobTab: React.FC<{}> = () => {
           selectedDestination={selectedDestination}
         />
       </StepWrapper>
+
+      <button
+        disabled={selectedPlaylists.length === 0}
+        className={`cursor-pointer w-full py-3 px-6 font-semibold rounded-2xl cursor-auto transition-all duration-300 ${
+          selectedPlaylists.length === 0
+            ? "bg-white/10 text-white/30 cursor-not-allowed"
+            : "bg-gradient-to-r from-green-400 to-cyan-400 text-white hover:from-green-500 hover:to-cyan-500 hover:transform hover:-translate-y-0.5 hover:shadow-lg"
+        }`}
+        onClick={triggerJob}
+      >
+        Transfer {selectedPlaylists.length} Playlist
+        {selectedPlaylists.length !== 1 ? "s" : ""}
+      </button>
+
       <Tooltip id="tooltip" />
     </div>
   );
