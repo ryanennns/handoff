@@ -14,9 +14,9 @@ export const ServicesTab = ({ enabledServices }: Props) => {
     const bEnabled = enabledServices.includes(b);
 
     if (aEnabled && !bEnabled) return -1; // a comes first
-    if (!aEnabled && bEnabled) return 1;  // b comes first
+    if (!aEnabled && bEnabled) return 1; // b comes first
     return 0; // maintain original order if both are enabled or both are disabled
-  })
+  });
 
   return (
     <div className="space-y-8">

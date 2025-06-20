@@ -16,32 +16,13 @@ enum NewJobSteps {
   SelectDestination,
 }
 
-export const NewJobTab: React.FC<{}> = () => {
+export const NewJobTab = ({
+  enabledServices,
+}: {
+  enabledServices: Service[];
+}) => {
   // todo -- make api call here to get enabled services
-  const [enabledServices, setEnabledServices] = useState<Service[]>([]);
   const [isTransferring, setIsTransferring] = useState(false);
-
-  useEffect(() => {
-    fetch("https://handoff-api.enns.dev/api/services", {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("auth_token")}`,
-      },
-    })
-      .then(async (response) => {
-        if (!response.ok) {
-          throw new Error("Failed to fetch enabled services");
-        }
-        const data = (await response.json()).services;
-        const servicesList = Object.values(ServiceEnum).filter((service) =>
-          data.includes(service),
-        ) as Service[];
-        console.log({ servicesList });
-        setEnabledServices(servicesList);
-      })
-      .catch((error) => {
-        console.error("Error fetching enabled services:", error);
-      });
-  }, []);
 
   const [selectedSource, setSelectedSource] = useState<Service | null>(null);
   const [selectedDestination, setSelectedDestination] =

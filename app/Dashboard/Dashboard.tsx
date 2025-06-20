@@ -191,7 +191,9 @@ export const Dashboard: React.FC = () => {
           {activeTab === "services" && (
             <ServicesTab enabledServices={enabledServices} />
           )}
-          {activeTab === "new-transfer" && <NewJobTab />}
+          {activeTab === "new-transfer" && (
+            <NewJobTab enabledServices={enabledServices} />
+          )}
         </div>
       </div>
     </div>

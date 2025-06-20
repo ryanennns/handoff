@@ -1,7 +1,7 @@
 import { type Service, services } from "~/Types/core";
 import { ServiceIcon } from "~/Components/ServiceIcon";
 import React from "react";
-import {serviceMap} from "~/Dashboard/const";
+import { serviceMap } from "~/Dashboard/const";
 
 interface Props {
   enabledServices: Service[];
