@@ -3,6 +3,7 @@ import { FloatingShape } from "~/Components/FloatingShape";
 import { TransferJobRow } from "./TransferJobRow";
 import { NewJobTab } from "./NewJob/NewJobTab";
 import type { TransferJob } from "~/Types/core";
+import type { Tab } from "~/Dashboard/types";
 
 export const Dashboard: React.FC = () => {
   const [hasAuthed, setHasAuthed] = useState(false);
@@ -50,12 +51,7 @@ export const Dashboard: React.FC = () => {
   }, []);
 
   const [scrollY, setScrollY] = useState(0);
-  const [activeTab, setActiveTab] = useState<"overview" | "new-transfer">(
-    "overview",
-  );
-  const [fromService, setFromService] = useState("");
-  const [toService, setToService] = useState("");
-  const [selectedPlaylist, setSelectedPlaylist] = useState("");
+  const [activeTab, setActiveTab] = useState<Tab>("overview");
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
@@ -107,6 +103,12 @@ export const Dashboard: React.FC = () => {
   ];
   mockJobs = [];
 
+  const tabs: { name: string; value: Tab }[] = [
+    { name: "Overview", value: "overview" },
+    { name: "Services", value: "services" },
+    { name: "New Transfer", value: "new-transfer" },
+  ];
+
   return hasAuthed ? (
     <div className="min-h-screen bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500 overflow-hidden">
       {/* Animated Background Shapes */}
@@ -135,33 +137,26 @@ export const Dashboard: React.FC = () => {
                 Dashboard
               </h1>
               <div className="flex gap-4">
-                <button
-                  onClick={() => setActiveTab("overview")}
-                  className={`px-6 py-2 rounded-xl font-medium transition-all duration-300 ${
-                    activeTab === "overview"
-                      ? "bg-white/20 text-white"
-                      : "text-white/70 hover:text-white hover:bg-white/10"
-                  }`}
-                >
-                  Overview
-                </button>
-                <button
-                  onClick={() => setActiveTab("new-transfer")}
-                  className={`px-6 py-2 rounded-xl font-medium transition-all duration-300 ${
-                    activeTab === "new-transfer"
-                      ? "bg-white/20 text-white"
-                      : "text-white/70 hover:text-white hover:bg-white/10"
-                  }`}
-                >
-                  New Transfer
-                </button>
+                {tabs.map((tab) => (
+                  <button
+                    key={tab.value}
+                    onClick={() => setActiveTab(tab.value)}
+                    className={`px-6 py-2 rounded-xl font-medium transition-all duration-300 ${
+                      activeTab === tab.value
+                        ? "bg-white/20 text-white"
+                        : "text-white/70 hover:text-white hover:bg-white/10"
+                    }`}
+                  >
+                    {tab.name}
+                  </button>
+                ))}
               </div>
             </div>
           </div>
         </header>
 
         <div className="max-w-7xl mx-auto px-6 py-8">
-          {activeTab === "overview" ? (
+          {activeTab === "overview" && (
             <div className="space-y-8">
               {/* Stats Cards */}
               <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
@@ -241,9 +236,8 @@ export const Dashboard: React.FC = () => {
                 )}
               </div>
             </div>
-          ) : (
-            <NewJobTab />
           )}
+          {activeTab === "new-transfer" && <NewJobTab />}
         </div>
       </div>
     </div>
