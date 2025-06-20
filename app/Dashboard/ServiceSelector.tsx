@@ -51,6 +51,10 @@ export const ServiceSelector = ({ service, enabled, onClick }: Props) => {
   const redirect = serviceMap[service].redirect;
 
   const startOauthFlow = () => {
+    if (enabled) {
+      return;
+    }
+
     if (!redirect) {
       console.log("no redirect URL configured for this service");
       return;

@@ -4,6 +4,7 @@ import { type Service, Service as ServiceEnum, services } from "~/Types/core";
 import { SelectSource } from "~/Dashboard/NewJob/SelectSource";
 import { SelectDestination } from "~/Dashboard/NewJob/SelectDestination";
 import { StepWrapper } from "./StepWrapper";
+import { SelectPlaylists } from "./SelectPlaylists";
 
 enum NewJobSteps {
   SelectSource,
@@ -12,7 +13,28 @@ enum NewJobSteps {
 
 export const NewJobTab: React.FC<{}> = () => {
   // todo -- make api call here to get enabled services
-  const enabledServices: Service[] = [ServiceEnum.YouTube, ServiceEnum.Spotify];
+  const [enabledServices, setEnabledServices] = useState<Service[]>([]);
+  useEffect(() => {
+    fetch("https://handoff-api.enns.dev/api/services", {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("auth_token")}`,
+      },
+    })
+      .then(async (response) => {
+        if (!response.ok) {
+          throw new Error("Failed to fetch enabled services");
+        }
+        const data = (await response.json()).services;
+        const servicesList = Object.values(ServiceEnum).filter((service) =>
+          data.includes(service),
+        ) as Service[];
+        setEnabledServices(servicesList);
+      })
+      .catch((error) => {
+        console.error("Error fetching enabled services:", error);
+      });
+  }, []);
+
   const [selectedSource, setSelectedSource] = useState<Service | null>(null);
   const [selectedDestination, setSelectedDestination] =
     useState<Service | null>(null);
@@ -55,6 +77,10 @@ export const NewJobTab: React.FC<{}> = () => {
           onClick={onSelectDestination}
           selectedDestination={selectedDestination}
         />
+      </StepWrapper>
+
+      <StepWrapper enabled={true}>
+        <SelectPlaylists service={selectedSource as string} />
       </StepWrapper>
       <Tooltip id="tooltip" />
     </div>
