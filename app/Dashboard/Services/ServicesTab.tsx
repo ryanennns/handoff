@@ -1,6 +1,7 @@
 import { type Service, services } from "~/Types/core";
 import { ServiceSelector } from "~/Dashboard/ServiceSelector";
 import React from "react";
+import { serviceMap } from "~/Dashboard/const";
 
 interface Props {
   enabledServices: Service[];
@@ -17,6 +18,12 @@ export const ServicesTab = ({ enabledServices }: Props) => {
     if (!aEnabled && bEnabled) return 1; // b comes first
     return 0; // maintain original order if both are enabled or both are disabled
   });
+
+  const serviceUrl = (service: Service, isConnected: boolean) => {
+    return isConnected
+      ? serviceMap[service].homepage
+      : `https://handoff-api.enns.dev/api/auth/redirect/${serviceMap[service].redirect}`;
+  };
 
   return (
     <div className="space-y-8">
@@ -43,45 +50,47 @@ export const ServicesTab = ({ enabledServices }: Props) => {
                   : "border-white/10 hover:bg-white/10 hover:border-white/20"
               }`}
             >
-              <div className="flex items-center gap-3">
-                <div className="relative">
-                  <ServiceSelector
-                    service={service}
-                    enabled={isConnected}
-                    onClick={() => {}}
-                    animations={false}
-                  />
-                </div>
-                <div className="flex-1">
-                  <h4 className="text-white font-medium capitalize">
-                    {service}
-                  </h4>
-                  <p
-                    className={`${isConnected ? "text-gray-300" : "text-white/50"} text-sm`}
-                  >
-                    {isConnected ? "Connected" : "Click to connect"}
-                  </p>
-                </div>
-                <div className="opacity-0 group-hover:opacity-100 transition-opacity">
-                  <svg
-                    className="w-5 h-5 text-white/40"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d={
-                        isConnected
-                          ? "M9 5l7 7-7 7"
-                          : "M12 6v6m0 0v6m0-6h6m-6 0H6"
-                      }
+              <a href={serviceUrl(service, isConnected)} target="_blank">
+                <div className="flex items-center gap-3">
+                  <div className="relative">
+                    <ServiceSelector
+                      service={service}
+                      enabled={isConnected}
+                      onClick={() => {}}
+                      animations={false}
                     />
-                  </svg>
+                  </div>
+                  <div className="flex-1">
+                    <h4 className="text-white font-medium capitalize">
+                      {service}
+                    </h4>
+                    <p
+                      className={`${isConnected ? "text-gray-300" : "text-white/50"} text-sm`}
+                    >
+                      {isConnected ? "Connected" : "Click to connect"}
+                    </p>
+                  </div>
+                  <div className="opacity-0 group-hover:opacity-100 transition-opacity">
+                    <svg
+                      className="w-5 h-5 text-white/40"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d={
+                          isConnected
+                            ? "M9 5l7 7-7 7"
+                            : "M12 6v6m0 0v6m0-6h6m-6 0H6"
+                        }
+                      />
+                    </svg>
+                  </div>
                 </div>
-              </div>
+              </a>
             </div>
           );
         })}

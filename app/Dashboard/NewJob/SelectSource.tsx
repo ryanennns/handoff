@@ -16,7 +16,7 @@ export const SelectSource = ({
 }: Props) => {
   return (
     <>
-      <h1 className="text-2xl font-bold">3. Select Destination</h1>
+      <h1 className="text-2xl font-bold">1. Select Source</h1>
       <div className="flex flex-row justify-center gap-12 mt-6">
         {services.map((service: Service) => {
           const enabled = enabledServices.includes(service);

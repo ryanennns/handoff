@@ -4,6 +4,7 @@ export interface ServiceSelectorConfig {
   name: string;
   icon: ReactElement;
   bgColor: string;
+  homepage: string;
   redirect?: string;
 }
 
