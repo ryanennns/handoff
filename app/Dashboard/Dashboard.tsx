@@ -2,11 +2,17 @@ import React, { useEffect, useState } from "react";
 import { FloatingShape } from "~/Components/FloatingShape";
 import { TransferJobRow } from "./TransferJobRow";
 import { NewJobTab } from "./NewJob/NewJobTab";
-import type { TransferJob } from "~/Types/core";
+import {
+  type Service,
+  Service as ServiceEnum,
+  type TransferJob,
+} from "~/Types/core";
 import type { Tab } from "~/Dashboard/types";
 import { OverviewTab } from "~/Dashboard/Overview/OverviewTab";
+import { ServicesTab } from "./Services/ServicesTab";
 
 export const Dashboard: React.FC = () => {
+  const [enabledServices, setEnabledServices] = useState<Service[]>([]);
   const [hasAuthed, setHasAuthed] = useState(false);
 
   useEffect(() => {
@@ -48,6 +54,28 @@ export const Dashboard: React.FC = () => {
       .catch(() => {
         localStorage.removeItem("auth_token");
         window.location.href = "/";
+      });
+  }, []);
+
+  useEffect(() => {
+    fetch("https://handoff-api.enns.dev/api/services", {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("auth_token")}`,
+      },
+    })
+      .then(async (response) => {
+        if (!response.ok) {
+          throw new Error("Failed to fetch enabled services");
+        }
+        const data = (await response.json()).services;
+        const servicesList = Object.values(ServiceEnum).filter((service) =>
+          data.includes(service),
+        ) as Service[];
+        console.log({ servicesList });
+        setEnabledServices(servicesList);
+      })
+      .catch((error) => {
+        console.error("Error fetching enabled services:", error);
       });
   }, []);
 
@@ -159,6 +187,9 @@ export const Dashboard: React.FC = () => {
         <div className="max-w-7xl mx-auto px-6 py-8">
           {activeTab === "overview" && (
             <OverviewTab jobs={mockJobs} setActiveTab={setActiveTab} />
+          )}
+          {activeTab === "services" && (
+            <ServicesTab enabledServices={enabledServices} />
           )}
           {activeTab === "new-transfer" && <NewJobTab />}
         </div>
