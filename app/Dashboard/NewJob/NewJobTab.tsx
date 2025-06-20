@@ -19,6 +19,8 @@ enum NewJobSteps {
 export const NewJobTab: React.FC<{}> = () => {
   // todo -- make api call here to get enabled services
   const [enabledServices, setEnabledServices] = useState<Service[]>([]);
+  const [isTransferring, setIsTransferring] = useState(false);
+
   useEffect(() => {
     fetch("https://handoff-api.enns.dev/api/services", {
       headers: {
@@ -33,7 +35,7 @@ export const NewJobTab: React.FC<{}> = () => {
         const servicesList = Object.values(ServiceEnum).filter((service) =>
           data.includes(service),
         ) as Service[];
-        console.log({servicesList})
+        console.log({ servicesList });
         setEnabledServices(servicesList);
       })
       .catch((error) => {
@@ -62,7 +64,46 @@ export const NewJobTab: React.FC<{}> = () => {
     );
   };
 
-  const triggerJob = () => {
+  const triggerJob = async () => {
+    setIsTransferring(true);
+
+    try {
+      const response = await fetch(
+        "https://handoff-api.enns.dev/api/playlist-transfers/trigger",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("auth_token")}`,
+          },
+          body: JSON.stringify({
+            source: selectedSource,
+            destination: selectedDestination,
+            playlists: selectedPlaylists.map((p) => p.id),
+          }),
+        },
+      );
+
+      if (!response.ok) {
+        throw new Error(
+          `Transfer failed: ${response.status} ${response.statusText}`,
+        );
+      }
+
+      const result = await response.json();
+      console.log("Transfer successful:", result);
+
+      // Reset form or show success message
+      setSelectedPlaylists([]);
+      setCurrentStep(NewJobSteps.SelectSource);
+    } catch (error) {
+      console.error("Transfer failed:", error);
+      // You might want to show an error message to the user here
+      alert("Transfer failed. Please try again.");
+    } finally {
+      setIsTransferring(false);
+    }
+
     console.log({
       selectedSource,
       selectedDestination,
@@ -95,16 +136,17 @@ export const NewJobTab: React.FC<{}> = () => {
       </StepWrapper>
 
       <button
-        disabled={selectedPlaylists.length === 0}
+        disabled={selectedPlaylists.length === 0 || isTransferring}
         className={`cursor-pointer w-full py-3 px-6 font-semibold rounded-2xl cursor-auto transition-all duration-300 ${
-          selectedPlaylists.length === 0
+          selectedPlaylists.length === 0 || isTransferring
             ? "bg-white/10 text-white/30 cursor-not-allowed"
             : "bg-gradient-to-r from-green-400 to-cyan-400 text-white hover:from-green-500 hover:to-cyan-500 hover:transform hover:-translate-y-0.5 hover:shadow-lg"
         }`}
         onClick={triggerJob}
       >
-        Transfer {selectedPlaylists.length} Playlist
-        {selectedPlaylists.length !== 1 ? "s" : ""}
+        {isTransferring
+          ? "Transferring..."
+          : `Transfer ${selectedPlaylists.length} Playlist${selectedPlaylists.length !== 1 ? "s" : ""}`}
       </button>
 
       <Tooltip id="tooltip" />
