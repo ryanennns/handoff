@@ -9,6 +9,15 @@ interface Props {
 export const ServicesTab = ({ enabledServices }: Props) => {
   console.log({ enabledServices });
 
+  const sortedServices = services.sort((a, b) => {
+    const aEnabled = enabledServices.includes(a);
+    const bEnabled = enabledServices.includes(b);
+
+    if (aEnabled && !bEnabled) return -1; // a comes first
+    if (!aEnabled && bEnabled) return 1;  // b comes first
+    return 0; // maintain original order if both are enabled or both are disabled
+  })
+
   return (
     <div className="space-y-8">
       {/* Header */}
@@ -23,7 +32,7 @@ export const ServicesTab = ({ enabledServices }: Props) => {
 
       {/* Service Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {services.map((service: Service) => {
+        {sortedServices.map((service: Service) => {
           const isConnected = enabledServices.includes(service);
           return (
             <div
@@ -42,16 +51,13 @@ export const ServicesTab = ({ enabledServices }: Props) => {
                     onClick={() => {}}
                     animations={false}
                   />
-                  {isConnected && (
-                    <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 border-2 border-gray-900 rounded-full"></div>
-                  )}
                 </div>
                 <div className="flex-1">
                   <h4 className="text-white font-medium capitalize">
                     {service}
                   </h4>
                   <p
-                    className={`${isConnected ? "text-green-400" : "text-white/50"} text-sm`}
+                    className={`${isConnected ? "text-gray-300" : "text-white/50"} text-sm`}
                   >
                     {isConnected ? "Connected" : "Click to connect"}
                   </p>

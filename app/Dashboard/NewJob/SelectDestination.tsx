@@ -22,6 +22,7 @@ export const SelectDestination = ({
             service={service}
             enabled={enabledServices.includes(service)}
             onClick={() => onClick(service)}
+            animations={false}
           />
           <p className="text-white/70 text-sm capitalize">{service}</p>
         </div>
