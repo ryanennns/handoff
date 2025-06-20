@@ -21,19 +21,23 @@ export const NewJobTab: React.FC<{}> = () => {
   );
 
   const onSelectSource = (service: Service) => {
-    setSelectedSource(service !== null && service === selectedSource ? null : service);
+    setSelectedSource(
+      service !== null && service === selectedSource ? null : service,
+    );
     setCurrentStep(NewJobSteps.SelectDestination);
   };
 
   const onSelectDestination = (service: Service) => {
-    setSelectedDestination(service !== null && service === selectedDestination ? null : service);
+    setSelectedDestination(
+      service !== null && service === selectedDestination ? null : service,
+    );
   };
 
   useEffect(() => {
     console.log({
       selectedSource,
-      selectedDestination
-    })
+      selectedDestination,
+    });
   }, [selectedSource, selectedDestination]);
 
   return (

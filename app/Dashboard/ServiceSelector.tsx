@@ -8,6 +8,7 @@ interface ServiceSelectorConfig {
   name: string;
   icon: ReactElement;
   bgColor: string;
+  redirect?: string;
 }
 
 const serviceMap: Record<Service, ServiceSelectorConfig> = {
@@ -15,6 +16,7 @@ const serviceMap: Record<Service, ServiceSelectorConfig> = {
     name: "Spotify",
     icon: <FaSpotify />,
     bgColor: "bg-gradient-to-br from-green-400 to-green-600",
+    redirect: "spotify",
   },
   [Service.Tidal]: {
     name: "Tidal",
@@ -46,6 +48,23 @@ interface Props {
 
 export const ServiceSelector = ({ service, enabled, onClick }: Props) => {
   const bgColor = enabled ? serviceMap[service].bgColor : "bg-gray-500";
+  const redirect = serviceMap[service].redirect;
+
+  const startOauthFlow = () => {
+    if (!redirect) {
+      console.log("no redirect URL configured for this service");
+      return;
+    }
+
+    const token = localStorage.getItem("auth_token");
+    if (!token) {
+      console.log("no auth token found");
+      return;
+    }
+
+    const url = `https://handoff-api.enns.dev/api/auth/redirect/${redirect}?token=${token}`;
+    window.open(url, "_blank", "noopener,noreferrer");
+  };
 
   return (
     <div
@@ -54,7 +73,13 @@ export const ServiceSelector = ({ service, enabled, onClick }: Props) => {
       data-tooltip-place="top"
       onClick={enabled ? onClick : undefined}
     >
-      <ServiceIcon icon={serviceMap[service].icon} bgColor={bgColor} />
+      {redirect ? (
+        <span onClick={startOauthFlow}>
+          <ServiceIcon icon={serviceMap[service].icon} bgColor={bgColor} />
+        </span>
+      ) : (
+        <ServiceIcon icon={serviceMap[service].icon} bgColor={bgColor} />
+      )}
     </div>
   );
 };

@@ -8,7 +8,11 @@ interface Props {
   selectedDestination?: Service | null;
 }
 
-export const SelectDestination = ({ enabledServices, onClick, selectedDestination }: Props) => (
+export const SelectDestination = ({
+  enabledServices,
+  onClick,
+  selectedDestination,
+}: Props) => (
   <>
     <h1 className="text-2xl font-bold">2. Select Destination</h1>
     <div className="flex flex-row justify-center gap-12 mt-6">
