@@ -105,7 +105,7 @@ export const LandingPage: React.FC = () => {
                 <button
                   onClick={() =>
                     (window.location.href =
-                      "https://handoff-api.enns.dev/api/auth/redirect")
+                      "https://handoff-api.enns.dev/api/auth/redirect/google")
                   }
                   className="px-6 py-3 flex gap-4 items-center justify-center text-lg font-medium text-black bg-white rounded-2xl hover:bg-gray-100 transition-all duration-300 shadow-md"
                 >
