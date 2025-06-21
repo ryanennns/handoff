@@ -9,37 +9,30 @@ import {
 import type { Tab } from "~/Dashboard/types";
 import { OverviewTab } from "~/Dashboard/Overview/OverviewTab";
 import { ServicesTab } from "./Services/ServicesTab";
-import { api } from "~/Utils/apiClient";
+import {
+  api,
+  getEnabledServices,
+  getTransferJobs,
+} from "~/Utils/apiClient";
 import { getCookie } from "~/Utils/utils";
 import { FadeWrapper } from "~/Utils/FadeWrapper";
 
 export const Dashboard: React.FC = () => {
-  const getPlaylistTransfers = () => {
-    api
-      .get("/playlist-transfers")
-      .then((response) => {
-        const data = response.data.data as TransferJob[];
-        console.log({ data });
-        setJobs(data);
-      })
-      .catch((error) => {
-        console.log("Error fetching transfer jobs:", error);
+  const updatePlaylistTransfers = () => {
+    getTransferJobs()
+      .then((transferJobs) => setJobs(transferJobs))
+      .catch((e) => {
+        console.error("Error fetching playlist transfers:", e);
+        setJobs([]);
       });
   };
 
-  const getEnabledServices = () => {
-    api
-      .get("/services")
-      .then((response) => {
-        const data = response.data.services;
-        const servicesList = Object.values(ServiceEnum).filter((service) =>
-          data.includes(service),
-        ) as Service[];
-        console.log({ servicesList });
-        setEnabledServices(servicesList);
-      })
-      .catch((error) => {
-        console.error("Error fetching enabled services:", error);
+  const updateEnabledServices = () => {
+    getEnabledServices()
+      .then((services) => setEnabledServices(services))
+      .catch((e) => {
+        console.error("Error fetching enabled services:", e);
+        setEnabledServices([]);
       });
   };
 
@@ -89,8 +82,8 @@ export const Dashboard: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    getEnabledServices();
-    getPlaylistTransfers();
+    updateEnabledServices();
+    updatePlaylistTransfers();
   }, []);
 
   const [activeTab, setActiveTab] = useState<Tab>("overview");
@@ -102,7 +95,7 @@ export const Dashboard: React.FC = () => {
   ];
 
   const onJobCreated = () => {
-    getPlaylistTransfers();
+    updatePlaylistTransfers();
     setActiveTab("overview");
   };
 
