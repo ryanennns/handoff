@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Tooltip } from "react-tooltip";
 import {
   type Playlist,
@@ -77,6 +77,20 @@ export const NewJobTab = ({
     });
   };
 
+  const canTransfer = useMemo<boolean>(() => {
+    return (
+      !isTransferring &&
+      selectedPlaylists.length > 0 &&
+      selectedDestination !== null &&
+      selectedSource !== null
+    );
+  }, [
+    selectedPlaylists.length,
+    isTransferring,
+    selectedDestination,
+    selectedSource,
+  ]);
+
   return (
     <div className="max-w-4xl mx-auto flex flex-col gap-8">
       <StepWrapper enabled={currentStep >= NewJobSteps.SelectSource}>
@@ -102,9 +116,9 @@ export const NewJobTab = ({
       </StepWrapper>
 
       <button
-        disabled={selectedPlaylists.length === 0 || isTransferring}
-        className={`cursor-pointer w-full py-3 px-6 font-semibold rounded-2xl cursor-auto transition-all duration-300 ${
-          selectedPlaylists.length === 0 || isTransferring
+        disabled={!canTransfer}
+        className={`cursor-pointer w-full py-3 px-6 font-semibold rounded-2xl transition-all duration-300 ${
+          !canTransfer
             ? "bg-white/10 text-white/30 cursor-not-allowed"
             : "bg-gradient-to-r from-green-400 to-cyan-400 text-white hover:from-green-500 hover:to-cyan-500 hover:transform hover:-translate-y-0.5 hover:shadow-lg"
         }`}
