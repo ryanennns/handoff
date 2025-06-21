@@ -12,6 +12,7 @@ import { OverviewTab } from "~/Dashboard/Overview/OverviewTab";
 import { ServicesTab } from "./Services/ServicesTab";
 import { api } from "~/Utils/apiClient";
 import { getCookie } from "~/Utils/utils";
+import { FadeWrapper } from "~/Utils/FadeWrapper";
 
 export const Dashboard: React.FC = () => {
   const [enabledServices, setEnabledServices] = useState<Service[]>([]);
@@ -174,15 +175,17 @@ export const Dashboard: React.FC = () => {
         </header>
 
         <div className="max-w-7xl mx-auto px-6 py-8">
-          {activeTab === "overview" && (
-            <OverviewTab jobs={mockJobs} setActiveTab={setActiveTab} />
-          )}
-          {activeTab === "services" && (
-            <ServicesTab enabledServices={enabledServices} />
-          )}
-          {activeTab === "new-transfer" && (
-            <NewJobTab enabledServices={enabledServices} />
-          )}
+          <FadeWrapper activeKey={activeTab}>
+            {activeTab === "overview" && (
+              <OverviewTab jobs={mockJobs} setActiveTab={setActiveTab} />
+            )}
+            {activeTab === "services" && (
+              <ServicesTab enabledServices={enabledServices} />
+            )}
+            {activeTab === "new-transfer" && (
+              <NewJobTab enabledServices={enabledServices} />
+            )}
+          </FadeWrapper>
         </div>
       </div>
     </div>
