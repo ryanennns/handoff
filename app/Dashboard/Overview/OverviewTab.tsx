@@ -11,46 +11,6 @@ interface Props {
 export const OverviewTab = ({ jobs, setActiveTab }: Props) => {
   return (
     <div className="space-y-8">
-      {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        {[
-          {
-            label: "Total Transfers",
-            value: "847",
-            color: "from-green-400 to-cyan-400",
-          },
-          {
-            label: "Songs Transferred",
-            value: "23,451",
-            color: "from-pink-400 to-purple-400",
-          },
-          {
-            label: "Active Jobs",
-            value: "3",
-            color: "from-yellow-400 to-orange-400",
-          },
-          {
-            label: "Success Rate",
-            value: "98.7%",
-            color: "from-blue-400 to-indigo-400",
-          },
-        ].map((stat) => (
-          <div
-            key={stat.label}
-            className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20 hover:transform hover:-translate-y-1 transition-all duration-300"
-          >
-            <div
-              className={`text-3xl font-bold bg-gradient-to-r ${stat.color} bg-clip-text text-transparent mb-2`}
-            >
-              {stat.value}
-            </div>
-            <div className="text-white/70 text-sm font-medium">
-              {stat.label}
-            </div>
-          </div>
-        ))}
-      </div>
-
       {/* Recent 1s */}
       <div className="bg-white/10 backdrop-blur-xl rounded-3xl p-8 border border-white/20">
         {jobs.length ? (

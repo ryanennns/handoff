@@ -13,7 +13,7 @@ interface Props {
 export const ServicesTab = ({ enabledServices }: Props) => {
   console.log({ enabledServices });
 
-  const sortedServices = services.sort((a, b) => {
+  const sortedServices = [...services].sort((a, b) => {
     const aEnabled = enabledServices.includes(a);
     const bEnabled = enabledServices.includes(b);
 

@@ -113,10 +113,10 @@ export const NewJobTab = ({ enabledServices, onJobCreated }: Props) => {
 
       <button
         disabled={!canTransfer}
-        className={`cursor-pointer w-full py-3 px-6 font-semibold rounded-2xl transition-all duration-300 ${
+        className={`w-full py-3 px-6 font-semibold rounded-2xl transition-all duration-300 ${
           !canTransfer
             ? "bg-white/10 text-white/30 cursor-not-allowed"
-            : "bg-gradient-to-r from-green-400 to-cyan-400 text-white hover:from-green-500 hover:to-cyan-500 hover:transform hover:-translate-y-0.5 hover:shadow-lg"
+            : "cursor-pointer bg-gradient-to-r from-green-400 to-cyan-400 text-white hover:from-green-500 hover:to-cyan-500 hover:transform hover:-translate-y-0.5 hover:shadow-lg"
         }`}
         onClick={triggerJob}
       >
