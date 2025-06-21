@@ -18,26 +18,6 @@ export const ServiceSelector = ({
   const bgColor = enabled ? serviceMap[service].bgColor : "bg-gray-500";
   const redirect = serviceMap[service].redirect;
 
-  const startOauthFlow = () => {
-    if (enabled) {
-      return;
-    }
-
-    if (!redirect) {
-      console.log("no redirect URL configured for this service");
-      return;
-    }
-
-    const token = localStorage.getItem("auth_token");
-    if (!token) {
-      console.log("no auth token found");
-      return;
-    }
-
-    const url = `https://handoff-api.enns.dev/api/auth/redirect/${redirect}?token=${token}`;
-    window.open(url, "_blank", "noopener,noreferrer");
-  };
-
   return (
     <div
       data-tooltip-id="tooltip"
@@ -45,21 +25,11 @@ export const ServiceSelector = ({
       data-tooltip-place="top"
       onClick={enabled ? onClick : undefined}
     >
-      {redirect ? (
-        <span onClick={startOauthFlow}>
-          <ServiceIcon
-            icon={serviceMap[service].icon}
-            bgColor={bgColor}
-            animations={animations}
-          />
-        </span>
-      ) : (
-        <ServiceIcon
-          icon={serviceMap[service].icon}
-          bgColor={bgColor}
-          animations={animations}
-        />
-      )}
+      <ServiceIcon
+        icon={serviceMap[service].icon}
+        bgColor={bgColor}
+        animations={animations}
+      />
     </div>
   );
 };

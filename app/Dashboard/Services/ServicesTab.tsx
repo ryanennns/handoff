@@ -2,6 +2,7 @@ import { type Service, services } from "~/Types/core";
 import { ServiceSelector } from "~/Dashboard/ServiceSelector";
 import React from "react";
 import { serviceMap } from "~/Dashboard/const";
+import { getToken } from "~/Utils/apiClient";
 
 interface Props {
   enabledServices: Service[];
@@ -22,7 +23,7 @@ export const ServicesTab = ({ enabledServices }: Props) => {
   const serviceUrl = (service: Service, isConnected: boolean) => {
     return isConnected
       ? serviceMap[service].homepage
-      : `https://handoff-api.enns.dev/api/auth/redirect/${serviceMap[service].redirect}`;
+      : `https://handoff-api.enns.dev/api/auth/redirect/${serviceMap[service].redirect}?token=${getToken()}`;
   };
 
   return (

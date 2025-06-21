@@ -9,6 +9,7 @@ import { SelectSource } from "~/Dashboard/NewJob/SelectSource";
 import { SelectDestination } from "~/Dashboard/NewJob/SelectDestination";
 import { StepWrapper } from "./StepWrapper";
 import { SelectPlaylists } from "./SelectPlaylists";
+import { api } from "~/Utils/apiClient";
 
 enum NewJobSteps {
   SelectSource,
@@ -49,37 +50,21 @@ export const NewJobTab = ({
     setIsTransferring(true);
 
     try {
-      const response = await fetch(
-        "https://handoff-api.enns.dev/api/playlist-transfers/trigger",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("auth_token")}`,
-          },
-          body: JSON.stringify({
-            source: selectedSource,
-            destination: selectedDestination,
-            playlists: selectedPlaylists.map((p) => p.id),
-          }),
-        },
-      );
+      const response = await api.post("/playlist-transfers/trigger", {
+        source: selectedSource,
+        destination: selectedDestination,
+        playlists: selectedPlaylists.map((p) => ({
+          id: p.id,
+          name: p.name,
+        })),
+      });
 
-      if (!response.ok) {
-        throw new Error(
-          `Transfer failed: ${response.status} ${response.statusText}`,
-        );
-      }
+      console.log("Transfer successful:", response.data);
 
-      const result = await response.json();
-      console.log("Transfer successful:", result);
-
-      // Reset form or show success message
       setSelectedPlaylists([]);
       setCurrentStep(NewJobSteps.SelectSource);
     } catch (error) {
       console.error("Transfer failed:", error);
-      // You might want to show an error message to the user here
       alert("Transfer failed. Please try again.");
     } finally {
       setIsTransferring(false);

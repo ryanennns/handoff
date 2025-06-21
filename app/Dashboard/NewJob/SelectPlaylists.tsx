@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import type { Playlist } from "~/Types/core";
+import { api } from "~/Utils/apiClient";
 
 interface Props {
   service?: string;
@@ -16,15 +17,11 @@ export const SelectPlaylists = ({ service, setter }: Props) => {
     if (!service) return;
 
     setLoading(true);
-    const token = localStorage.getItem("auth_token");
 
-    fetch(`https://handoff-api.enns.dev/api/playlists?service=${service}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then(async (r) => {
-        const data = (await r.json()).playlists;
+    api
+      .get("/playlists", { params: { service } })
+      .then((res) => {
+        const data = res.data.playlists;
         setPlaylists(data);
       })
       .catch((error) => {

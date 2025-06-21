@@ -10,6 +10,8 @@ import {
 import type { Tab } from "~/Dashboard/types";
 import { OverviewTab } from "~/Dashboard/Overview/OverviewTab";
 import { ServicesTab } from "./Services/ServicesTab";
+import { api } from "~/Utils/apiClient";
+import { getCookie } from "~/Utils/utils";
 
 export const Dashboard: React.FC = () => {
   const [enabledServices, setEnabledServices] = useState<Service[]>([]);
@@ -18,9 +20,9 @@ export const Dashboard: React.FC = () => {
   useEffect(() => {
     if (typeof window === "undefined") return;
     const url = new URL(window.location.href);
-    const token = url.searchParams.get("token");
+    const token = url.searchParams.get("token") ?? getCookie("auth_token");
     if (token) {
-      localStorage.setItem("auth_token", token);
+      document.cookie = `auth_token=${token}; path=/; secure; samesite=strict; max-age=2592000`;
       url.searchParams.delete("token");
       window.history.replaceState(
         {},
@@ -32,42 +34,29 @@ export const Dashboard: React.FC = () => {
 
   useEffect(() => {
     if (typeof window === "undefined") return;
-    const token = localStorage.getItem("auth_token");
+    const token = getCookie("auth_token");
     if (!token) {
       window.location.href = "/";
       return;
     }
 
-    fetch("https://handoff-api.enns.dev/api/user", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
+    api
+      .get("/user")
       .then((res) => {
-        if (!res.ok) throw new Error("Unauthorized");
-        return res.json();
-      })
-      .then((data) => {
-        console.log("Authenticated user:", data);
+        console.log("Authenticated user:", res.data);
         setHasAuthed(true);
       })
       .catch(() => {
-        localStorage.removeItem("auth_token");
+        document.cookie = "auth_token=; Max-Age=0; path=/;";
         window.location.href = "/";
       });
   }, []);
 
   useEffect(() => {
-    fetch("https://handoff-api.enns.dev/api/services", {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("auth_token")}`,
-      },
-    })
-      .then(async (response) => {
-        if (!response.ok) {
-          throw new Error("Failed to fetch enabled services");
-        }
-        const data = (await response.json()).services;
+    api
+      .get("/services")
+      .then((response) => {
+        const data = response.data.services;
         const servicesList = Object.values(ServiceEnum).filter((service) =>
           data.includes(service),
         ) as Service[];
