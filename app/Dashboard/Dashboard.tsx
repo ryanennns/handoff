@@ -15,8 +15,22 @@ import { getCookie } from "~/Utils/utils";
 import { FadeWrapper } from "~/Utils/FadeWrapper";
 
 export const Dashboard: React.FC = () => {
+  const getPlaylistTransfers = () => {
+    api
+      .get("/playlist-transfers")
+      .then((response) => {
+        const data = response.data.data as TransferJob[];
+        console.log({ data });
+        setJobs(data);
+      })
+      .catch((error) => {
+        console.log("Error fetching transfer jobs:", error);
+      });
+  };
+
   const [enabledServices, setEnabledServices] = useState<Service[]>([]);
   const [hasAuthed, setHasAuthed] = useState(false);
+  const [jobs, setJobs] = useState<TransferJob[]>([]);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -67,66 +81,26 @@ export const Dashboard: React.FC = () => {
       .catch((error) => {
         console.error("Error fetching enabled services:", error);
       });
-  }, []);
 
-  const [scrollY, setScrollY] = useState(0);
-  const [activeTab, setActiveTab] = useState<Tab>("overview");
+    getPlaylistTransfers();
+  }, []);
 
   useEffect(() => {
-    const handleScroll = () => setScrollY(window.scrollY);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+    console.log("snickers", { jobs });
+  }, [jobs]);
 
-  let mockJobs: TransferJob[] = [
-    {
-      id: "1",
-      playlists: 1,
-      fromService: "spotify",
-      toService: "apple",
-      status: "completed",
-      songsTotal: 127,
-      songsTransferred: 127,
-      createdAt: "2025-06-18T14:30:00Z",
-    },
-    {
-      id: "2",
-      playlists: 25,
-      fromService: "youtube",
-      toService: "spotify",
-      status: "in-progress",
-      songsTotal: 85,
-      songsTransferred: 62,
-      createdAt: "2025-06-19T09:15:00Z",
-    },
-    {
-      id: "3",
-      playlists: 1,
-      fromService: "apple",
-      toService: "tidal",
-      status: "pending",
-      songsTotal: 43,
-      songsTransferred: 0,
-      createdAt: "2025-06-19T11:45:00Z",
-    },
-    {
-      id: "4",
-      playlists: 1,
-      fromService: "spotify",
-      toService: "youtube",
-      status: "failed",
-      songsTotal: 156,
-      songsTransferred: 23,
-      createdAt: "2025-06-17T16:20:00Z",
-    },
-  ];
-  // mockJobs = [];
+  const [activeTab, setActiveTab] = useState<Tab>("overview");
 
   const tabs: { name: string; value: Tab }[] = [
     { name: "Overview", value: "overview" },
     { name: "Services", value: "services" },
     { name: "New Transfer", value: "new-transfer" },
   ];
+
+  const onJobCreated = () => {
+    getPlaylistTransfers();
+    setActiveTab("overview");
+  };
 
   return hasAuthed ? (
     <div className="min-h-screen bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500 overflow-hidden">
@@ -177,7 +151,7 @@ export const Dashboard: React.FC = () => {
         <div className="max-w-7xl mx-auto px-6 py-8">
           <FadeWrapper activeKey={activeTab}>
             {activeTab === "overview" && (
-              <OverviewTab jobs={mockJobs} setActiveTab={setActiveTab} />
+              <OverviewTab jobs={jobs} setActiveTab={setActiveTab} />
             )}
             {activeTab === "services" && (
               <ServicesTab
@@ -188,7 +162,7 @@ export const Dashboard: React.FC = () => {
             {activeTab === "new-transfer" && (
               <NewJobTab
                 enabledServices={enabledServices}
-                setActiveTab={setActiveTab}
+                onJobCreated={onJobCreated}
               />
             )}
           </FadeWrapper>

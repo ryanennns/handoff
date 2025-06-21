@@ -15,12 +15,15 @@ export const FadeWrapper = ({ children, activeKey }: Props) => {
       setFadeState("fade-out");
       const timeout = setTimeout(() => {
         setDisplayedKey(activeKey);
-        setRenderedChildren(children); // update after fade-out
+        setRenderedChildren(children);
         setFadeState("fade-in");
       }, 200);
       return () => clearTimeout(timeout);
+    } else {
+      // same tab, just update children
+      setRenderedChildren(children);
     }
-  }, [activeKey, displayedKey, children]);
+  }, [activeKey, children]);
 
   return (
     <div

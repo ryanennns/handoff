@@ -16,13 +16,11 @@ export const services: Service[] = [
 
 export interface TransferJob {
   id: string;
-  playlists: number;
-  fromService: string;
-  toService: string;
-  status: "pending" | "in-progress" | "completed" | "failed";
-  songsTotal: number;
-  songsTransferred: number;
-  createdAt: string;
+  source: Service;
+  destination: Service;
+  playlists: Pick<Playlist, "id" | "name">[];
+  status: "pending" | "in_progress" | "completed" | "failed";
+  created_at: string;
 }
 
 export interface Playlist {

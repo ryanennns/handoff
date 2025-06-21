@@ -4,15 +4,13 @@ import React from "react";
 import { Service, type TransferJob } from "~/Types/core";
 import { serviceMap } from "~/Dashboard/const";
 
-const getServiceInfo = (serviceId: string) => {
-  // Convert string serviceId to Service enum if needed
-  const service = serviceId as Service;
+const getServiceInfo = (service: Service) => {
   return serviceMap[service];
 };
 
 export const TransferJobRow: React.FC<{ job: TransferJob }> = ({ job }) => {
-  const fromServiceInfo = getServiceInfo(job.fromService);
-  const toServiceInfo = getServiceInfo(job.toService);
+  const fromServiceInfo = getServiceInfo(job.source);
+  const toServiceInfo = getServiceInfo(job.destination);
 
   return (
     <div
@@ -35,32 +33,13 @@ export const TransferJobRow: React.FC<{ job: TransferJob }> = ({ job }) => {
               {fromServiceInfo?.name} ➡️ {toServiceInfo?.name}
             </h3>
             <p className="text-white/60 text-sm">
-              {job.playlists} {job.playlists === 1 ? "Playlist" : "Playlists"}
+              {job.playlists.length}{" "}
+              {job.playlists.length === 1 ? "Playlist" : "Playlists"}
+              {" - "} {new Date(job.created_at).toLocaleDateString()}
             </p>
           </div>
         </div>
         <JobStatusBadge status={job.status} />
-      </div>
-
-      <div className="flex items-center justify-between">
-        <div className="text-white/70 text-sm">
-          {job.songsTransferred} of {job.songsTotal} songs
-        </div>
-        <div className="flex items-center gap-4">
-          {job.status === "in-progress" && (
-            <div className="w-32 bg-white/20 rounded-full h-2">
-              <div
-                className="bg-gradient-to-r from-pink-400 to-yellow-400 h-2 rounded-full transition-all duration-300"
-                style={{
-                  width: `${(job.songsTransferred / job.songsTotal) * 100}%`,
-                }}
-              />
-            </div>
-          )}
-          <div className="text-white/50 text-sm">
-            {new Date(job.createdAt).toLocaleDateString()}
-          </div>
-        </div>
       </div>
     </div>
   );

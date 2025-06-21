@@ -20,10 +20,10 @@ enum NewJobSteps {
 
 interface Props {
   enabledServices: Service[];
-  setActiveTab: React.Dispatch<React.SetStateAction<Tab>>;
+  onJobCreated: () => void;
 }
 
-export const NewJobTab = ({ enabledServices, setActiveTab }: Props) => {
+export const NewJobTab = ({ enabledServices, onJobCreated }: Props) => {
   // todo -- make api call here to get enabled services
   const [isTransferring, setIsTransferring] = useState(false);
 
@@ -61,23 +61,15 @@ export const NewJobTab = ({ enabledServices, setActiveTab }: Props) => {
         })),
       });
 
-      console.log("Transfer successful:", response.data);
-
       setSelectedPlaylists([]);
       setCurrentStep(NewJobSteps.SelectSource);
-      setActiveTab("overview");
+      onJobCreated();
     } catch (error) {
       console.error("Transfer failed:", error);
       alert("Transfer failed. Please try again.");
     } finally {
       setIsTransferring(false);
     }
-
-    console.log({
-      selectedSource,
-      selectedDestination,
-      selectedPlaylists: selectedPlaylists.map((p: Playlist) => p.id),
-    });
   };
 
   const canTransfer = useMemo<boolean>(() => {
