@@ -1,45 +1,13 @@
-import { FaArrowRight, FaSpotify, FaYoutube } from "react-icons/fa";
+import { FaArrowRight } from "react-icons/fa";
 import { JobStatusBadge } from "~/Components/JobStatusBadge";
 import React from "react";
-import { SiAmazonmusic, SiApplemusic, SiTidal } from "react-icons/si";
-import type { TransferJob } from "~/Types/core";
+import { Service, type TransferJob } from "~/Types/core";
+import { serviceMap } from "~/Dashboard/const";
 
-interface ServiceOption {
-  id: string;
-  name: string;
-  icon: React.ReactNode;
-  color: string;
-}
-
-const services: ServiceOption[] = [
-  {
-    id: "spotify",
-    name: "Spotify",
-    icon: <FaSpotify />,
-    color: "text-green-400",
-  },
-  {
-    id: "youtube",
-    name: "YouTube Music",
-    icon: <FaYoutube />,
-    color: "text-red-500",
-  },
-  {
-    id: "apple",
-    name: "Apple Music",
-    icon: <SiApplemusic />,
-    color: "text-red-400",
-  },
-  { id: "tidal", name: "Tidal", icon: <SiTidal />, color: "text-white" },
-  {
-    id: "amazon",
-    name: "Amazon Music",
-    icon: <SiAmazonmusic />,
-    color: "text-cyan-400",
-  },
-];
 const getServiceInfo = (serviceId: string) => {
-  return services.find((s) => s.id === serviceId);
+  // Convert string serviceId to Service enum if needed
+  const service = serviceId as Service;
+  return serviceMap[service];
 };
 
 export const TransferJobRow: React.FC<{ job: TransferJob }> = ({ job }) => {
@@ -54,20 +22,20 @@ export const TransferJobRow: React.FC<{ job: TransferJob }> = ({ job }) => {
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-3">
-            <div className={`text-xl ${fromServiceInfo?.color}`}>
-              {fromServiceInfo?.icon}
+            <div className={`p-2 rounded-lg ${fromServiceInfo?.bgColor}`}>
+              <div className="text-xl text-white">{fromServiceInfo?.icon}</div>
             </div>
             <FaArrowRight className="text-white/50" />
-            <div className={`text-xl ${toServiceInfo?.color}`}>
-              {toServiceInfo?.icon}
+            <div className={`p-2 rounded-lg ${toServiceInfo?.bgColor}`}>
+              <div className="text-xl text-white">{toServiceInfo?.icon}</div>
             </div>
           </div>
           <div>
             <h3 className="text-white font-semibold text-lg">
-              {job.playlistName}
+              {fromServiceInfo?.name} ➡️ {toServiceInfo?.name}
             </h3>
             <p className="text-white/60 text-sm">
-              {fromServiceInfo?.name} → {toServiceInfo?.name}
+              {job.playlists} {job.playlists === 1 ? "Playlist" : "Playlists"}
             </p>
           </div>
         </div>

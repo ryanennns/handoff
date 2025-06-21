@@ -81,7 +81,7 @@ export const Dashboard: React.FC = () => {
   let mockJobs: TransferJob[] = [
     {
       id: "1",
-      playlistName: "My Indie Favorites",
+      playlists: 1,
       fromService: "spotify",
       toService: "apple",
       status: "completed",
@@ -91,7 +91,7 @@ export const Dashboard: React.FC = () => {
     },
     {
       id: "2",
-      playlistName: "Workout Hits 2024",
+      playlists: 25,
       fromService: "youtube",
       toService: "spotify",
       status: "in-progress",
@@ -101,7 +101,7 @@ export const Dashboard: React.FC = () => {
     },
     {
       id: "3",
-      playlistName: "Chill Vibes",
+      playlists: 1,
       fromService: "apple",
       toService: "tidal",
       status: "pending",
@@ -111,7 +111,7 @@ export const Dashboard: React.FC = () => {
     },
     {
       id: "4",
-      playlistName: "90s Throwback",
+      playlists: 1,
       fromService: "spotify",
       toService: "youtube",
       status: "failed",
@@ -120,7 +120,7 @@ export const Dashboard: React.FC = () => {
       createdAt: "2025-06-17T16:20:00Z",
     },
   ];
-  mockJobs = [];
+  // mockJobs = [];
 
   const tabs: { name: string; value: Tab }[] = [
     { name: "Overview", value: "overview" },

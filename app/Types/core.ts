@@ -16,7 +16,7 @@ export const services: Service[] = [
 
 export interface TransferJob {
   id: string;
-  playlistName: string;
+  playlists: number;
   fromService: string;
   toService: string;
   status: "pending" | "in-progress" | "completed" | "failed";
