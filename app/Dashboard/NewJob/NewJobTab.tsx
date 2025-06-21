@@ -97,6 +97,7 @@ export const NewJobTab = ({
         <SelectSource
           enabledServices={enabledServices}
           onClick={onSelectSource}
+          selectedSource={selectedSource}
         />
       </StepWrapper>
 

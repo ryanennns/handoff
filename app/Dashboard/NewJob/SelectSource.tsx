@@ -29,6 +29,11 @@ export const SelectSource = ({
                 data-tooltip-content={serviceMap[service].name}
                 data-tooltip-place="top"
                 onClick={() => onClick(service)}
+                className={`rounded-3xl p-1 transition-all duration-300 ${
+                  selectedSource === service
+                    ? "ring-4 ring-inset ring-white-400 shadow-xl"
+                    : ""
+                }`}
               >
                 <ServiceIcon
                   icon={serviceMap[service].icon}
