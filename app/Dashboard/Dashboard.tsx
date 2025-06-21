@@ -1,19 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { FloatingShape } from "~/Components/FloatingShape";
 import { NewJobTab } from "./NewJob/NewJobTab";
-import {
-  type Service,
-  Service as ServiceEnum,
-  type TransferJob,
-} from "~/Types/core";
+import { type Service, type TransferJob } from "~/Types/core";
 import type { Tab } from "~/Dashboard/types";
 import { OverviewTab } from "~/Dashboard/Overview/OverviewTab";
 import { ServicesTab } from "./Services/ServicesTab";
-import {
-  api,
-  getEnabledServices,
-  getTransferJobs,
-} from "~/Utils/apiClient";
+import { api, getEnabledServices, getTransferJobs } from "~/Utils/apiClient";
 import { getCookie } from "~/Utils/utils";
 import { FadeWrapper } from "~/Utils/FadeWrapper";
 
