@@ -35,7 +35,8 @@ export const TransferJobRow: React.FC<{ job: TransferJob }> = ({ job }) => {
             <p className="text-white/60 text-sm">
               {job.playlists.length}{" "}
               {job.playlists.length === 1 ? "Playlist" : "Playlists"}
-              {" - "} {new Date(job.created_at).toLocaleDateString()}
+              {" - "} {new Date(job.created_at).toLocaleDateString()}{" "}
+              {new Date(job.created_at).toLocaleTimeString()}
             </p>
           </div>
         </div>

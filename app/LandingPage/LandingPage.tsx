@@ -158,11 +158,10 @@ export const LandingPage: React.FC = () => {
                 description:
                   "Perfect for music lovers who want hassle-free transfers.",
                 features: [
-                  "20 playlist transfers a month",
-                  "Priority matching",
-                  "Basic support",
+                  "Transfer up to 500 songs free of charge",
+                  "Transfer across all supported platforms",
                 ],
-                price: "Free",
+                price: "$0.00 / month",
                 highlight: false,
               },
               {
@@ -170,11 +169,11 @@ export const LandingPage: React.FC = () => {
                 description:
                   "Designed for power users with multiple libraries to manage.",
                 features: [
-                  "Unlimited everything",
-                  "Real-time analytics",
+                  "Transfer unlimited songs across all platforms",
+                  "Coordinate daily backups",
                   "Dedicated support",
                 ],
-                price: "$3/mo",
+                price: "$2.99 / month",
                 highlight: true,
               },
             ].map(({ title, description, features, price, highlight }) => (

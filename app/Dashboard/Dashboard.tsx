@@ -27,6 +27,44 @@ export const Dashboard: React.FC = () => {
       });
   };
 
+  const getEnabledServices = () => {
+    api
+      .get("/services")
+      .then((response) => {
+        const data = response.data.services;
+        const servicesList = Object.values(ServiceEnum).filter((service) =>
+          data.includes(service),
+        ) as Service[];
+        console.log({ servicesList });
+        setEnabledServices(servicesList);
+      })
+      .catch((error) => {
+        console.error("Error fetching enabled services:", error);
+      });
+  };
+
+  const verifyAuthToken = () => {
+    if (typeof window === "undefined") {
+      return;
+    }
+    const token = getCookie("auth_token");
+    if (!token) {
+      window.location.href = "/";
+      return;
+    }
+
+    api
+      .get("/user")
+      .then((res) => {
+        console.log("Authenticated user:", res.data);
+        setHasAuthed(true);
+      })
+      .catch(() => {
+        document.cookie = "auth_token=; Max-Age=0; path=/;";
+        window.location.href = "/";
+      });
+  };
+
   const [enabledServices, setEnabledServices] = useState<Service[]>([]);
   const [hasAuthed, setHasAuthed] = useState(false);
   const [jobs, setJobs] = useState<TransferJob[]>([]);
@@ -47,46 +85,13 @@ export const Dashboard: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
-    const token = getCookie("auth_token");
-    if (!token) {
-      window.location.href = "/";
-      return;
-    }
-
-    api
-      .get("/user")
-      .then((res) => {
-        console.log("Authenticated user:", res.data);
-        setHasAuthed(true);
-      })
-      .catch(() => {
-        document.cookie = "auth_token=; Max-Age=0; path=/;";
-        window.location.href = "/";
-      });
+    verifyAuthToken();
   }, []);
 
   useEffect(() => {
-    api
-      .get("/services")
-      .then((response) => {
-        const data = response.data.services;
-        const servicesList = Object.values(ServiceEnum).filter((service) =>
-          data.includes(service),
-        ) as Service[];
-        console.log({ servicesList });
-        setEnabledServices(servicesList);
-      })
-      .catch((error) => {
-        console.error("Error fetching enabled services:", error);
-      });
-
+    getEnabledServices();
     getPlaylistTransfers();
   }, []);
-
-  useEffect(() => {
-    console.log("snickers", { jobs });
-  }, [jobs]);
 
   const [activeTab, setActiveTab] = useState<Tab>("overview");
 
