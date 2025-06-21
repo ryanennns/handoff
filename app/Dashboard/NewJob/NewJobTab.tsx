@@ -10,6 +10,7 @@ import { SelectDestination } from "~/Dashboard/NewJob/SelectDestination";
 import { StepWrapper } from "./StepWrapper";
 import { SelectPlaylists } from "./SelectPlaylists";
 import { api } from "~/Utils/apiClient";
+import type { Tab } from "~/Dashboard/types";
 
 enum NewJobSteps {
   SelectSource,
@@ -17,11 +18,12 @@ enum NewJobSteps {
   SelectDestination,
 }
 
-export const NewJobTab = ({
-  enabledServices,
-}: {
+interface Props {
   enabledServices: Service[];
-}) => {
+  setActiveTab: React.Dispatch<React.SetStateAction<Tab>>;
+}
+
+export const NewJobTab = ({ enabledServices, setActiveTab }: Props) => {
   // todo -- make api call here to get enabled services
   const [isTransferring, setIsTransferring] = useState(false);
 
@@ -63,6 +65,7 @@ export const NewJobTab = ({
 
       setSelectedPlaylists([]);
       setCurrentStep(NewJobSteps.SelectSource);
+      setActiveTab("overview");
     } catch (error) {
       console.error("Transfer failed:", error);
       alert("Transfer failed. Please try again.");

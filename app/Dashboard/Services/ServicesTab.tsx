@@ -3,9 +3,11 @@ import { ServiceSelector } from "~/Dashboard/ServiceSelector";
 import React from "react";
 import { serviceMap } from "~/Dashboard/const";
 import { getToken } from "~/Utils/apiClient";
+import type { Tab } from "~/Dashboard/types";
 
 interface Props {
   enabledServices: Service[];
+  setActiveTab: React.Dispatch<React.SetStateAction<Tab>>;
 }
 
 export const ServicesTab = ({ enabledServices }: Props) => {

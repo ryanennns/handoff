@@ -180,10 +180,16 @@ export const Dashboard: React.FC = () => {
               <OverviewTab jobs={mockJobs} setActiveTab={setActiveTab} />
             )}
             {activeTab === "services" && (
-              <ServicesTab enabledServices={enabledServices} />
+              <ServicesTab
+                enabledServices={enabledServices}
+                setActiveTab={setActiveTab}
+              />
             )}
             {activeTab === "new-transfer" && (
-              <NewJobTab enabledServices={enabledServices} />
+              <NewJobTab
+                enabledServices={enabledServices}
+                setActiveTab={setActiveTab}
+              />
             )}
           </FadeWrapper>
         </div>
